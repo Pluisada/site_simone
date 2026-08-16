@@ -1,27 +1,49 @@
 ---
 /**
  * Áreas de Atuação — editorial blocks, NOT a card grid.
- * design-system.md §20, content-positioning-brief.md §5.
+ * design-system.md §20 (amended 2026-08-16, client-approved),
+ * content-positioning-brief.md §5.
  *
- * STRUCTURE: each area is a row with a narrow label column (name + audience
- * tag) and a wider description column. Rows are separated by hairline borders.
+ * ARCHITECTURE — two editorial groups, not six peer rows:
+ *  - Group 1 "Linguagem, fala e desenvolvimento": the five clinical/
+ *    developmental areas, inquiry-priority ordered. Equal visual weight.
+ *  - Group 2 "Comunicação profissional": Oratória, alone. Separated from
+ *    Group 1 by heading, spacing and a hairline divider only — never by a
+ *    special background/card. The grouping distinguishes two different
+ *    visitor needs (clinical vs. professional-communication), not a
+ *    statement that either group, or Oratória, is more important.
  *
  * HARD RULES (design-system.md §35):
  *  - No uniform six-card grid. No medical icons. No decorative illustration.
- *  - ORDER IS FIXED: inquiry-priority order from client-validation A2. This is
- *    a scan-order decision only, never a statement of relative importance.
- *  - AFASIA carries identical visual weight to the other five — same type,
- *    spacing and treatment. It must never be visually downgraded.
- *  - ORATÓRIA is the single approved tinted module (terracotta-light +
- *    radius-md). It stays inside this section as one of the six areas — it is
- *    not a separate service or product.
+ *  - No background tint / radius module on Oratória — it uses the exact
+ *    same row treatment as every other area (supersedes the earlier
+ *    terracotta-tint rule; see design-system.md §20 amendment).
+ *  - Group order and area order within each group are FIXED — see
+ *    src/data/practice-areas.ts.
+ *  - AFASIA carries identical visual weight to the other four Group 1
+ *    areas — same type, spacing and treatment. It must never be visually
+ *    downgraded.
+ *  - The two group headings share identical typographic treatment — neither
+ *    group is allowed to read as more important than the other.
+ *
+ * HEADING HIERARCHY: H2 (section title) → H3 (group heading) → H4 (area
+ * name). H4 keeps the same visual size the area name had as an H3 before
+ * this change (see .area__name) — only the semantic level moved down one
+ * step to make room for the new group heading.
  *
  * CONTENT: every description is the client's own plain-language wording,
  * verbatim from src/data/practice-areas.ts. Nothing is rewritten into
  * marketing copy; no symptom, outcome, statistic or age range is invented.
  */
 import Container from './Container.astro';
-import { practiceAreas, serviceScope } from '../data/practice-areas';
+import { practiceAreas, practiceAreaGroups, serviceScope } from '../data/practice-areas';
+import type { PracticeAreaGroupKey } from '../data/practice-areas';
+
+const groups = (Object.keys(practiceAreaGroups) as PracticeAreaGroupKey[]).map((key) => ({
+  key,
+  label: practiceAreaGroups[key],
+  areas: practiceAreas.filter((area) => area.group === key),
+}));
 ---
 
 <section class="areas" id="areas-de-atuacao" aria-labelledby="areas-title">
@@ -33,27 +55,36 @@ import { practiceAreas, serviceScope } from '../data/practice-areas';
       </h2>
     </header>
 
-    <ul class="areas__list">
-      {
-        practiceAreas.map((area) => (
-          <li
-            class:list={['area', area.variant === 'coaching' && 'area--coaching']}
-            id={area.id}
-          >
-            <div class="area__label">
-              <h3 class="area__name">{area.name}</h3>
-              <p class="area__audience">{area.audience}</p>
-            </div>
-            <div class="area__body">
-              <p class="area__description">{area.description}</p>
-              {area.variant === 'coaching' && (
-                <p class="area__note">{serviceScope.oratoriaFormat}</p>
-              )}
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      groups.map((group, index) => (
+        <div
+          class:list={['areas__group', index > 0 && 'areas__group--divided']}
+          role="group"
+          aria-labelledby={`areas-group-${group.key}`}
+        >
+          <h3 class="areas__group-title" id={`areas-group-${group.key}`}>
+            {group.label}
+          </h3>
+
+          <ul class="areas__list">
+            {group.areas.map((area) => (
+              <li class="area" id={area.id}>
+                <div class="area__label">
+                  <h4 class="area__name">{area.name}</h4>
+                  <p class="area__audience">{area.audience}</p>
+                </div>
+                <div class="area__body">
+                  <p class="area__description">{area.description}</p>
+                  {area.id === 'oratoria' && (
+                    <p class="area__note">{serviceScope.oratoriaFormat}</p>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
 
     {/* Validated scope notes (client-validation B1, D1). Kept as plain
         eligibility statements, not claims. */}
@@ -83,18 +114,26 @@ import { practiceAreas, serviceScope } from '../data/practice-areas';
     max-inline-size: 20ch;
   }
 
+  .areas__group-title {
+    margin: 0 0 var(--space-md);
+  }
+
+  /* Divider between the two groups: hairline + generous whitespace, per
+   * design-system.md §20 — typography/spacing/divider carry the grouping,
+   * never a card or background fill. */
+  .areas__group--divided {
+    margin-block-start: var(--space-2xl);
+    padding-block-start: var(--space-xl);
+    border-block-start: 1px solid var(--color-border);
+  }
+
   .areas__list {
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  /* Horizontal bleed lets the Oratória tint extend past the text edge while
-   * its text stays aligned with every other row. Kept smaller than the
-   * container gutter so it can never cause horizontal overflow. */
   .area {
-    --area-bleed: var(--space-sm);
-
     display: flex;
     flex-direction: column;
     gap: var(--space-2xs);
@@ -108,6 +147,10 @@ import { practiceAreas, serviceScope } from '../data/practice-areas';
 
   .area__name {
     margin: 0;
+    /* H4 now (was H3) — same visual size as before, existing tokens only. */
+    font-size: var(--font-size-h3);
+    line-height: var(--leading-h3);
+    letter-spacing: var(--tracking-h3);
   }
 
   .area__audience {
@@ -131,22 +174,6 @@ import { practiceAreas, serviceScope } from '../data/practice-areas';
     color: var(--color-text-muted);
   }
 
-  /* ---- Oratória: the one approved tinted module (design-system.md §20) ----
-   * Restrained: a tint and a radius, nothing more. No border, no shadow,
-   * no separate heading treatment — it stays one of the six areas. */
-  .area--coaching {
-    margin-inline: calc(var(--area-bleed) * -1);
-    padding-inline: var(--area-bleed);
-    background-color: var(--color-terracotta-light);
-    border-radius: var(--radius-md);
-    border-block-end: 0;
-  }
-
-  /* NOTE: the row following the tinted module gets NO special spacing rule.
-   * An earlier version reduced its padding-block-start, which broke Afasia's
-   * required spacing parity with the other five areas (design-system.md §35).
-   * The tint's own radius provides enough separation on its own. */
-
   .areas__scope {
     display: flex;
     flex-direction: column;
@@ -168,8 +195,6 @@ import { practiceAreas, serviceScope } from '../data/practice-areas';
   /* ---- Desktop: narrow label column + wider description column ---- */
   @media (min-width: 1024px) {
     .area {
-      --area-bleed: var(--space-md);
-
       display: grid;
       grid-template-columns: 3fr 9fr; /* design-system.md §20 */
       gap: var(--space-xl);

@@ -297,16 +297,29 @@ No third button style exists. There is no outline/bordered button variant unless
 
 ## 20. Editorial Practice Blocks (Áreas de Atuação)
 
-**Structure — not cards.** Each of the six areas is a row with two parts: a narrow label column (area name, H3 + optional audience tag) and a wider description column (body copy, capped at `layout.container.text`). Desktop: label and description sit side by side (≈3/12 + ≈9/12). Mobile: label stacks above description.
+> **AMENDED 2026-08-16 (client-approved).** The six areas were originally a
+> single flat list of rows with Oratória distinguished by a terracotta-tinted
+> background. The client has since approved a **two-group editorial
+> structure** — "Linguagem, fala e desenvolvimento" (5 areas) and
+> "Comunicação profissional" (Oratória, alone) — that separates two
+> different *kinds* of visitor need, not a statement that either group, or
+> any single area, is more important than the rest. The terracotta-background
+> rule below is **retired**: Oratória now uses the identical row treatment as
+> every other area, in its own group. The grouping is carried by heading
+> structure, spacing and a hairline divider only. Source of truth:
+> `src/data/practice-areas.ts` (`practiceAreaGroups`).
 
-- **Order (fixed):** atraso de linguagem, trocas na fala, distúrbios da fluência, motricidade orofacial, oratória, afasia — inquiry-volume ordering only, per [[content-positioning-brief]] §5.
-- **Divider:** `1px solid color.border` between rows, `space.lg` vertical rhythm.
+**Structure — not cards.** The six areas are split into two editorial groups, each introduced by its own group heading (H3) and containing a set of rows. A row still has two parts: a narrow label column (area name, H4 + optional audience tag) and a wider description column (body copy, capped at `layout.container.text`). Desktop: label and description sit side by side (≈3/12 + ≈9/12). Mobile: label stacks above description.
+
+- **Group 1 — "Linguagem, fala e desenvolvimento":** atraso de linguagem, trocas na fala, distúrbios da fluência, motricidade orofacial, afasia — inquiry-volume ordering only, per [[content-positioning-brief]] §5. This is a scan-order decision only, never a statement of relative importance. All five carry identical visual weight.
+- **Group 2 — "Comunicação profissional":** oratória, alone. Same row treatment as every Group 1 area — no tint, no radius, no card. The group heading alone communicates "different kind of need," never "featured service."
+- **Group heading:** H3, `font-display` (Fraunces), identical type scale and weight for both groups — deliberately equal typographic treatment so neither group outranks the other.
+- **Group divider:** the second group is separated from the first by `1px solid color.border` plus `space.xl`+ whitespace — in addition to (not instead of) the `1px solid color.border` row divider between rows inside each group, at `space.lg` vertical rhythm.
 - **Audience tag:** small caption text (§6) with a `2px` left border in `color.border` — **not** a pill/badge shape.
-- **Oratória distinction:** background fill `color.terracotta-light`, `radius.md`, internal padding added on all sides so it reads as its own module rather than a plain row — the one approved use of terracotta as a background.
-- **Afasia:** identical row structure, identical type scale, identical spacing to the four other clinical areas — no reduced treatment, no different position in the visual hierarchy (fixed rule, §35).
+- **Afasia:** identical row structure, identical type scale, identical spacing to the other four Group 1 areas — no reduced treatment, no different position in the visual hierarchy (fixed rule, §35).
 - **Icons:** none by default. If a scanning-value icon is added later (e.g., a small age-range glyph), it must be single-stroke-weight, non-clinical, and approved before use — not a current part of this system (§35, needs approval).
 
-**Mobile:** same six rows, full width, oratória's tint and radius preserved at full width so the distinction survives the stack.
+**Mobile:** the same two groups stack full width in the same order — Group 1's five rows, then the Group 2 heading, then Oratória — with no special indentation and no reduced size for Oratória.
 
 ---
 
@@ -459,7 +472,7 @@ Explicit per-section behavior — not "responsive" as a blanket statement:
 | Section | Mobile (<768px) | Tablet (768–1023px) | Desktop (≥1024px) |
 |---|---|---|---|
 | **Hero** | Single column, message-first order, portrait capped 320px/80vw, centered below CTA | Same as mobile — the asymmetric split is desktop-only (§19) | Two-column asymmetric grid, 58/42 split, both columns in first viewport |
-| **Áreas de Atuação** | Full-width stacked rows, label above description, oratória tint preserved | Same row structure as mobile; label/description may move to side-by-side once width allows without cramping | Label/description side by side within each row (§20) |
+| **Áreas de Atuação** | Full-width stacked groups — Group 1's five rows, then the Group 2 heading, then Oratória; no tint anywhere | Same row/group structure as mobile; label/description may move to side-by-side once width allows without cramping | Label/description side by side within each row; two full-width group headings (§20) |
 | **About/Credentials** | Single column, portrait above text, Tier 3 still one wrapped line | Same as mobile | Two-column, portrait beside text (§21) |
 | **How It Works** | Vertical connected timeline, one step per screen-height roughly | Same vertical timeline as mobile | Horizontal connected timeline (§22) |
 | **FAQ** | Full-width accordion, same interaction pattern | Same as mobile, width may narrow to `layout.container.text` | Same interaction pattern, constrained to `layout.container.text` within the section |
@@ -470,9 +483,10 @@ Explicit per-section behavior — not "responsive" as a blanket statement:
 
 ## 33. Component Principles
 
-**Cards are allowed in exactly two places — nowhere else:**
+**Cards are allowed in exactly one place — nowhere else:**
 1. FAQ panels (§24)
-2. The oratória distinction module within Áreas de Atuação (§20) — and only because it needs a background fill to read as "different in kind," not because it's a card for card's sake
+
+Áreas de Atuação previously had a second, narrowly-scoped exception for an Oratória background-fill module. That exception is **retired** (§20, amended 2026-08-16) — Oratória now uses the same plain row treatment as every other area, so Áreas de Atuação has no card or background fill anywhere.
 
 **Editorial blocks are the default for Áreas de Atuação** — a row-based, label+description structure (§20), never a grid of uniform boxes.
 
@@ -544,14 +558,15 @@ Every token above is named for what it *means*, not where it happens to be used 
 - No pill/full border-radius anywhere; the exact three radius tokens in §13
 - No box-shadow beyond the single `shadow.sm` token, and never on a button
 - CTA button: identical visual treatment at all three in-page placements and the mobile bar — no per-context restyling
-- Áreas de Atuação as editorial blocks, never a uniform card grid; afasia carries identical visual weight to the other five areas
+- Áreas de Atuação as editorial blocks, never a uniform card grid; afasia carries identical visual weight to the other areas in its group
+- Áreas de Atuação as two editorial groups — "Linguagem, fala e desenvolvimento" (5 areas) and "Comunicação profissional" (Oratória, alone) — with identical row treatment across both groups; no background tint distinguishes Oratória (§20, amended 2026-08-16, client-approved)
 - No cliché medical iconography, no gradients, no glassmorphism, no announcement bar, no desktop floating chat bubble
 - The excluded image assets in §27 must not enter the new asset library
 - Every accessibility floor in §30 — these are minimums, not targets to trade off against visual polish
 
 **FLEXIBLE — implementer may decide within the stated constraints:**
 - Exactly which spacing-scale step applies at a given micro-location, as long as it's a token from §9, not an arbitrary value
-- The precise internal arrangement of an Áreas de Atuação row (label-left vs. label-right, etc.), as long as it stays card-free and preserves ordering, the oratória distinction, and afasia's parity
+- The precise internal arrangement of an Áreas de Atuação row (label-left vs. label-right, etc.), as long as it stays card-free and preserves the two-group structure (§20), ordering within each group, and afasia's parity
 - `<details>/<summary>` vs. button+ARIA for the FAQ pattern — either satisfies §24's requirements
 - Exact easing/duration choices within the ranges given in §31
 - Placeholder/scaffolding copy used during build (never final copy)

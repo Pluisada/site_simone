@@ -1,5 +1,5 @@
 /**
- * Áreas de Atuação — six validated practice areas.
+ * Áreas de Atuação — six validated practice areas, in two editorial groups.
  *
  * Every `description` below is the client's OWN plain-language wording,
  * verbatim from docs/discovery/client-validation.md (C1) and the final
@@ -7,13 +7,31 @@
  * These are clinical descriptions authored by the practitioner — they must
  * not be reworded, shortened or "improved" without her re-validation.
  *
+ * GROUPING (client-approved 2026-08-16, design-system.md §20 amended):
+ * two editorial groups distinguish two different visitor needs — NOT a
+ * statement that one group or area is more important than another.
+ *  - `language-development`: the five clinical/developmental areas.
+ *  - `professional-communication`: oratória, alone.
+ * See `practiceAreaGroups` below for the group labels.
+ *
  * ORDER IS FIXED (design-system.md §20 / content-positioning-brief §5):
- * inquiry-volume ordering from client-validation A2. This is a scan-order
- * decision only — it is NOT a statement of relative importance.
+ * within `language-development`, inquiry-volume ordering from
+ * client-validation A2. This is a scan-order decision only — it is NOT a
+ * statement of relative importance.
  *
  * `afasia` carries identical visual weight to every other area — explicitly
- * client-validated, and a fixed rule in design-system.md §35.
+ * client-validated, and a fixed rule in design-system.md §35. Oratória also
+ * carries identical row-level visual weight to every other area — it is no
+ * longer background-tinted; only its group heading differs.
  */
+
+export type PracticeAreaGroupKey = 'language-development' | 'professional-communication';
+
+/** Group labels — the only thing that visually distinguishes Oratória now. */
+export const practiceAreaGroups: Record<PracticeAreaGroupKey, string> = {
+  'language-development': 'Linguagem, fala e desenvolvimento',
+  'professional-communication': 'Comunicação profissional',
+};
 
 export type PracticeArea = {
   /** Stable id, also used as the section anchor. */
@@ -24,11 +42,8 @@ export type PracticeArea = {
   description: string;
   /** Light audience tag — not a pill/badge (design-system.md §20). */
   audience: string;
-  /**
-   * Visual treatment. 'clinical' = standard editorial row.
-   * 'coaching' = the single terracotta-tinted module (oratória only).
-   */
-  variant: 'clinical' | 'coaching';
+  /** Which editorial group this area belongs to. See practiceAreaGroups. */
+  group: PracticeAreaGroupKey;
 };
 
 export const practiceAreas: PracticeArea[] = [
@@ -38,7 +53,7 @@ export const practiceAreas: PracticeArea[] = [
     description:
       'Atraso de linguagem é quando uma criança demora mais que o esperado para começar a falar ou para formar frases; ela pode entender bem, mas falar menos palavras que outras da mesma idade.',
     audience: 'Crianças e adolescentes',
-    variant: 'clinical',
+    group: 'language-development',
   },
   {
     id: 'trocas-na-fala',
@@ -46,7 +61,7 @@ export const practiceAreas: PracticeArea[] = [
     description:
       'Quando a pessoa confunde ou substitui sons, sílabas ou palavras ao falar, fazendo com que a frase saia diferente do que ela queria dizer.',
     audience: 'Crianças e adolescentes',
-    variant: 'clinical',
+    group: 'language-development',
   },
   {
     id: 'disturbios-da-fluencia',
@@ -54,7 +69,7 @@ export const practiceAreas: PracticeArea[] = [
     description:
       'Gagueira é quando a pessoa repete sons, alonga sílabas ou trava ao falar, o que atrapalha o ritmo da fala e pode causar frustração.',
     audience: 'Crianças, adolescentes e adultos',
-    variant: 'clinical',
+    group: 'language-development',
   },
   {
     id: 'motricidade-orofacial',
@@ -62,7 +77,7 @@ export const practiceAreas: PracticeArea[] = [
     description:
       'Motricidade orofacial é o conjunto de movimentos que fazemos com a boca e o rosto para funções importantes do dia a dia, como mastigar, engolir, respirar, falar e até expressar emoções. Quando essa motricidade não está funcionando bem, podemos ter dificuldades nessas atividades, e a terapia ajuda a fortalecer e coordenar esses músculos.',
     audience: 'Crianças, adolescentes e adultos',
-    variant: 'clinical',
+    group: 'language-development',
   },
   {
     id: 'oratoria',
@@ -70,7 +85,7 @@ export const practiceAreas: PracticeArea[] = [
     description:
       'Oratória é a habilidade de falar em público de forma clara e organizada para explicar ideias, contar histórias ou convencer quem escuta.',
     audience: 'Adultos',
-    variant: 'coaching',
+    group: 'professional-communication',
   },
   {
     id: 'afasia',
@@ -78,7 +93,7 @@ export const practiceAreas: PracticeArea[] = [
     description:
       'Afasia compreensão e expressão é quando alguém tem dificuldade para entender o que os outros dizem ou para encontrar as palavras e falar, geralmente por causa de uma lesão no cérebro.',
     audience: 'Adultos',
-    variant: 'clinical',
+    group: 'language-development',
   },
 ];
 

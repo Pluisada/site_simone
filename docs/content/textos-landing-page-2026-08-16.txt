@@ -1,0 +1,289 @@
+TEXTOS DA LANDING PAGE — SIMONE TAVOLARO
+Extraído do código-fonte em 2026-08-16, na ordem em que aparecem na página.
+Este arquivo é só para revisão de texto — não altera o site.
+
+================================================================
+METADADOS (título da aba do navegador / SEO — CLIENTE APROVOU em 2026-08-16)
+================================================================
+Título: Simone Tavolaro | Fonoaudióloga em Alphaville, Barueri
+Descrição: Atendimento fonoaudiológico particular e on-line em Alphaville,
+Barueri, para crianças, adolescentes e adultos: linguagem, fala, fluência
+e oratória.
+
+================================================================
+CABEÇALHO (Header)
+================================================================
+Nome: Simone Tavolaro
+Cargo: Fonoaudióloga
+
+Menu:
+- Início
+- Áreas de Atuação
+- Sobre
+- Contato
+
+Botão do cabeçalho (desktop): Conversar no WhatsApp
+
+================================================================
+1. HERO (primeira dobra)
+================================================================
+Tags de público (acima do título): Crianças e adolescentes · Adultos
+
+Título (H1):
+Fonoaudióloga especialista em linguagem
+
+Texto de apoio:
+Atendimento em atraso de linguagem, trocas na fala, distúrbios da
+fluência, motricidade orofacial, oratória e reabilitação de linguagem.
+
+Linha de credibilidade:
+Especialista em Linguagem e em Fonoaudiologia Educacional pelo Conselho
+Federal de Fonoaudiologia. Graduada pela PUC-SP.
+
+Botão (CTA): Conversar no WhatsApp
+
+Texto alternativo da foto (acessibilidade, não aparece visualmente):
+Simone Tavolaro, fonoaudióloga, em seu consultório
+
+================================================================
+2. AVALIAÇÕES NO GOOGLE (Social Proof)
+================================================================
+Eyebrow (etiqueta pequena acima do título): Avaliações no Google
+
+Título (H2):
+O que nossos pacientes estão dizendo
+
+Nota: 5,0  (★★★★★)  43 avaliações no Google
+
+Texto de apoio:
+Avaliações reais de pacientes e familiares.
+
+Link/botão: Veja as avaliações no Google →
+
+================================================================
+3. ÁREAS DE ATUAÇÃO
+================================================================
+Eyebrow: Áreas de Atuação
+
+Título (H2):
+Em que Simone pode ajudar
+
+--- Grupo 1: Linguagem, fala e desenvolvimento ---
+
+Atraso de linguagem — Crianças e adolescentes
+Atraso de linguagem é quando uma criança demora mais que o esperado para
+começar a falar ou para formar frases; ela pode entender bem, mas falar
+menos palavras que outras da mesma idade.
+
+Trocas na fala — Crianças e adolescentes
+Quando a pessoa confunde ou substitui sons, sílabas ou palavras ao falar,
+fazendo com que a frase saia diferente do que ela queria dizer.
+
+Distúrbios da fluência — Crianças, adolescentes e adultos
+Gagueira é quando a pessoa repete sons, alonga sílabas ou trava ao falar,
+o que atrapalha o ritmo da fala e pode causar frustração.
+
+Motricidade orofacial — Crianças, adolescentes e adultos
+Motricidade orofacial é o conjunto de movimentos que fazemos com a boca e
+o rosto para funções importantes do dia a dia, como mastigar, engolir,
+respirar, falar e até expressar emoções. Quando essa motricidade não está
+funcionando bem, podemos ter dificuldades nessas atividades, e a terapia
+ajuda a fortalecer e coordenar esses músculos.
+
+Afasia e reabilitação de linguagem — Adultos
+Afasia compreensão e expressão é quando alguém tem dificuldade para
+entender o que os outros dizem ou para encontrar as palavras e falar,
+geralmente por causa de uma lesão no cérebro.
+
+--- Grupo 2: Comunicação profissional ---
+
+Oratória — Adultos
+Oratória é a habilidade de falar em público de forma clara e organizada
+para explicar ideias, contar histórias ou convencer quem escuta.
+(nota abaixo da descrição): Atendimento individual, em consultório e/ou
+on-line
+
+--- Notas de elegibilidade (rodapé da seção) ---
+A partir de 2 anos e 6 meses. Antes dessa idade: orientação parental.
+Atendimento on-line disponível para adultos e adolescentes.
+
+================================================================
+[CTA repetido — só aparece em telas grandes / desktop]
+================================================================
+Botão: Conversar no WhatsApp
+
+================================================================
+4. QUEM É SIMONE
+================================================================
+Eyebrow: Quem é Simone
+
+Título (H2): Simone Tavolaro
+
+Texto de apresentação:
+Fonoaudióloga com atuação em linguagem e educação. Atende crianças,
+adolescentes e adultos em consultório particular em Alphaville, e também
+on-line.
+
+--- Nível 1: Especialista pelo Conselho Federal de Fonoaudiologia ---
+Especialista em Linguagem — registro n. 9940/24
+Especialista em Fonoaudiologia Educacional — registro n. 9144/23
+
+--- Nível 2: Formação ---
+Graduada em Fonoaudiologia
+PUC-SP — Pontifícia Universidade Católica de São Paulo
+
+--- Nível 3: Pós-graduações (Lato Sensu) ---
+Especialização em Linguagem · Avaliação e Reabilitação em Motricidade
+Orofacial · Neuroeducação · Educação Especial com Ênfase em Transtornos
+Globais do Desenvolvimento · Liderança e Coaching
+
+Link secundário: Veja as avaliações no Google
+(mesmo destino do módulo de avaliações acima — link discreto)
+
+Texto alternativo da foto:
+Simone Tavolaro sorrindo, sentada à mesa de atendimento em seu consultório
+
+================================================================
+5. COMO FUNCIONA
+================================================================
+Eyebrow: Como funciona
+
+Título (H2):
+Do primeiro contato ao acompanhamento
+
+Texto de apoio:
+O caminho é o mesmo para o atendimento presencial e para o on-line.
+
+Texto alternativo da foto:
+Sala de atendimento do consultório, com mesa, cadeiras e materiais de apoio
+
+--- Linha do tempo (4 passos) ---
+
+01 — WhatsApp
+O primeiro contato acontece por mensagem, com esclarecimentos sobre
+preços e horários.
+
+02 — Consulta inicial e entrevista
+Na consulta inicial acontece uma entrevista, quando são coletadas as
+informações sobre a queixa e o histórico do paciente.
+   Nota "No atendimento on-line": A sessão acontece pelo Google Meet, e o
+   link de acesso é enviado cerca de 10 minutos antes. Uma ficha de
+   cadastro e um termo de compromisso são enviados para preencher antes
+   da consulta.
+
+03 — Avaliação
+A partir das informações da entrevista, começa a avaliação.
+
+04 — Processo terapêutico
+Concluída a avaliação, inicia-se o processo terapêutico.
+
+================================================================
+6. PERGUNTAS FREQUENTES (FAQ)
+================================================================
+Eyebrow: Perguntas frequentes
+
+Título (H2):
+Dúvidas comuns antes do primeiro contato
+
+P: A partir de que idade Simone atende crianças?
+R: O atendimento é a partir de 2 anos e 6 meses. Antes dessa idade, é
+realizada orientação parental.
+
+P: Como funciona o atendimento on-line e para quem é indicado?
+R: O atendimento on-line é realizado para adultos e adolescentes e
+funciona da mesma forma que uma consulta presencial. As sessões
+acontecem pela plataforma Google Meet: o link de acesso é enviado cerca
+de 10 minutos antes do horário marcado, e é necessário estar conectado a
+uma rede ou plano de dados, em um ambiente tranquilo e sem interrupções.
+Antes da consulta, é enviada uma ficha de cadastro e um termo de
+compromisso que devem ser preenchidos e devolvidos.
+
+P: O que acontece depois que eu mando uma mensagem no WhatsApp?
+R: Primeiro há uma troca de mensagens com esclarecimentos sobre preços e
+horários. Na consulta inicial acontece uma entrevista, momento em que são
+coletadas as informações sobre a queixa e o histórico do paciente. A
+partir daí inicia-se a avaliação e o processo terapêutico.
+
+P: Simone atende por convênio? Emite recibo para reembolso?
+R: O atendimento é somente particular. São emitidos recibos para
+solicitação de reembolso junto ao plano de saúde.
+
+P: Quais são os horários de atendimento?
+R: O atendimento acontece de terças a quintas, nos períodos da manhã e
+da tarde.
+
+P: Onde fica o consultório?
+R: O consultório fica na Av. Andrômeda, 885, sala 1721, no Edifício
+Brascan Century Plaza, em Alphaville, Barueri (SP).
+
+P: Qual a melhor forma de entrar em contato?
+R: O contato é feito pelo WhatsApp, que é o canal utilizado para
+agendamentos e dúvidas.
+
+[NÃO PUBLICADA — pendente]
+P: O que significam os títulos e especializações?
+R: (ainda não escrita — falta uma explicação em linguagem simples sobre
+os títulos do CFFa; esta pergunta existe no código mas está OCULTA no
+site até ter resposta validada)
+
+================================================================
+7. CONTATO
+================================================================
+Eyebrow: Contato
+
+Título (H2): Vamos conversar
+
+Texto de apoio:
+O contato é feito pelo WhatsApp, onde também são esclarecidas dúvidas
+sobre horários e valores.
+
+Botão (CTA): Conversar no WhatsApp
+
+--- Lista de detalhes ---
+WhatsApp: (11) 97671-4748
+
+Consultório:
+Av. Andrômeda, 885, sala 1721
+Edifício Brascan Century Plaza
+Alphaville, Barueri — SP
+Link: Ver no Google Maps
+
+Horários: De terças a quintas, manhã e tarde
+
+Atendimento on-line: Atendimento on-line disponível para adultos e
+adolescentes
+
+================================================================
+RODAPÉ (Footer)
+================================================================
+Nome: Simone Tavolaro
+Cargo: Fonoaudióloga
+
+Navegação: Início · Áreas de Atuação · Sobre · Contato
+
+Registros profissionais:
+Especialista em Linguagem — n. 9940/24
+Especialista em Fonoaudiologia Educacional — n. 9144/23
+
+Linha final:
+© [ano atual] Simone Tavolaro · Alphaville, Barueri — SP
+
+================================================================
+BARRA FIXA DO WHATSAPP (mobile, aparece ao rolar a página)
+================================================================
+Botão: Conversar no WhatsApp
+
+================================================================
+OBSERVAÇÕES
+================================================================
+1. O botão "Conversar no WhatsApp" é o único CTA do site e aparece em
+   5 lugares (cabeçalho, hero, após Áreas de Atuação no desktop,
+   contato, barra fixa mobile) — o texto é sempre idêntico de propósito.
+2. Descrições de "Áreas de Atuação" são texto autoral da própria Simone
+   (linguagem clínica dela) — por regra do projeto (CLAUDE.md) não podem
+   ser reescritas sem passar de novo por ela.
+3. Campos como e-mail e horário técnico (openingHours) estão em branco
+   de propósito — nunca foram confirmados pela cliente, então não
+   aparecem em lugar nenhum do site.
+4. A pergunta do FAQ sobre "títulos e especializações" está sem
+   resposta e por isso não é exibida no site atualmente.
