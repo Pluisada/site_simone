@@ -1,22 +1,28 @@
 ---
 /**
- * Header — sticky slim header shell.
+ * Header — sticky slim header with desktop nav and accessible mobile panel.
  * design-system.md §17 (header) and §18 (navigation).
  *
- * PHASE 1 SCOPE: structure, sticky behavior, desktop nav, header CTA.
- * NOT YET IMPLEMENTED (Phase 2): the mobile hamburger toggle and its panel.
- * Per design-system.md §18 the mobile panel must cover only the upper portion
- * of the viewport so the persistent bottom CTA bar stays reachable, and it
- * must NOT duplicate the CTA inside the panel.
- *
  * HARD RULES:
- *  - No announcement bar component exists in this system (design-system.md §17).
+ *  - No announcement bar exists in this system (§17).
  *  - Solid cream background — no transparency, no backdrop blur.
- *  - Header does not hide on scroll; it only gains a border once scrolled.
+ *  - Header never hides on scroll; it only gains a border once scrolled.
+ *  - No CTA in the mobile header or inside the mobile panel (§18) — the
+ *    mobile CTA surface is the persistent bottom bar (§26, later phase).
+ *    The Hero CTA remains reachable in the first viewport meanwhile.
  */
 import Container from './Container.astro';
 import Button from './Button.astro';
 import { site, navItems } from '../data/site';
+
+const currentPath = Astro.url.pathname;
+
+/** Marks the active top-level page (anchor links never count as current). */
+function isCurrent(href: string): boolean {
+  if (href.includes('#')) return false;
+  if (href === '/') return currentPath === '/' || currentPath === '';
+  return currentPath.startsWith(href);
+}
 ---
 
 <header class="header" data-header>
@@ -26,12 +32,17 @@ import { site, navItems } from '../data/site';
       <span class="header__role">{site.role}</span>
     </a>
 
+    {/* Desktop navigation */}
     <nav class="header__nav" aria-label="Navegação principal">
       <ul class="header__list">
         {
           navItems.map((item) => (
             <li>
-              <a class="header__link" href={item.href}>
+              <a
+                class="header__link"
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
                 {item.label}
               </a>
             </li>
@@ -41,12 +52,51 @@ import { site, navItems } from '../data/site';
     </nav>
 
     <div class="header__cta">
-      {/* Final CTA label is Phase 2 copy — placeholder is intentional. */}
       <Button whatsapp ariaLabel={`Conversar no WhatsApp com ${site.name}`}>
-        [CTA_LABEL]
+        Conversar no WhatsApp
       </Button>
     </div>
+
+    {/* Mobile menu trigger */}
+    <button
+      type="button"
+      class="header__toggle"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      data-menu-toggle
+    >
+      <span class="header__toggle-box" aria-hidden="true">
+        <span class="header__toggle-bar"></span>
+        <span class="header__toggle-bar"></span>
+        <span class="header__toggle-bar"></span>
+      </span>
+      <span class="visually-hidden" data-menu-label>Abrir menu</span>
+    </button>
   </Container>
+
+  {/* Mobile navigation panel.
+      Covers only the upper portion of the viewport (§18) — never full-screen. */}
+  <div class="header__panel" id="mobile-nav" hidden data-menu-panel>
+    <Container>
+      <nav aria-label="Navegação principal (mobile)">
+        <ul class="header__panel-list">
+          {
+            navItems.map((item) => (
+              <li>
+                <a
+                  class="header__panel-link"
+                  href={item.href}
+                  aria-current={isCurrent(item.href) ? 'page' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </Container>
+  </div>
 </header>
 
 <style>
@@ -59,10 +109,9 @@ import { site, navItems } from '../data/site';
     transition: border-color var(--duration-fast) var(--easing-standard);
   }
 
-  /* Scrolled "settled" state — set by the inline script below. */
-  .header[data-scrolled='true'] {
+  .header[data-scrolled='true'],
+  .header[data-menu-open='true'] {
     border-bottom-color: var(--color-border);
-    box-shadow: var(--shadow-sm);
   }
 
   .header :global(.header__inner) {
@@ -80,28 +129,120 @@ import { site, navItems } from '../data/site';
     color: var(--color-primary);
   }
 
+  .header__brand:hover {
+    color: var(--color-primary-dark);
+  }
+
   .header__name {
     font-family: var(--font-display);
-    font-size: 1.125rem;
+    font-size: var(--font-size-wordmark);
     font-weight: var(--font-weight-semibold);
     line-height: 1.15;
   }
 
   .header__role {
     font-family: var(--font-body);
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-eyebrow);
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
     color: var(--color-text-muted);
   }
 
-  /* Desktop nav and header CTA are hidden below 1024px.
-   * On mobile the CTA lives in the bottom bar (design-system.md §18, §26)
-   * and navigation moves into the hamburger panel (Phase 2). */
+  /* Desktop nav + header CTA hidden below 1024px (§18). */
   .header__nav,
   .header__cta {
     display: none;
+  }
+
+  /* ---- Mobile toggle ---- */
+  .header__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--target-min);
+    block-size: var(--target-min);
+    margin-inline-end: calc(var(--space-2xs) * -1); /* optical edge alignment */
+    padding: 0;
+    background: none;
+    border: 0;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .header__toggle-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    inline-size: 22px;
+  }
+
+  .header__toggle-bar {
+    display: block;
+    block-size: 2px;
+    inline-size: 100%;
+    background-color: currentColor;
+    transition:
+      transform var(--duration-base) var(--easing-standard),
+      opacity var(--duration-fast) var(--easing-standard);
+  }
+
+  /* Hamburger morphs to a close icon — purposeful, communicates state. */
+  [aria-expanded='true'] .header__toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  [aria-expanded='true'] .header__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  [aria-expanded='true'] .header__toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ---- Mobile panel ---- */
+  .header__panel {
+    border-top: 1px solid var(--color-border);
+    background-color: var(--color-bg);
+    padding-block: var(--space-sm) var(--space-md);
+  }
+
+  .header__panel[hidden] {
+    display: none;
+  }
+
+  .header__panel-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .header__panel-link {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--target-comfortable);
+    font-size: var(--font-size-nav);
+    line-height: var(--leading-nav);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .header__panel-list li:last-child .header__panel-link {
+    border-bottom: 0;
+  }
+
+  .header__panel-link:hover {
+    color: var(--color-link-hover);
+  }
+
+  .header__panel-link[aria-current='page'] {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
   }
 
   @media (min-width: 1024px) {
@@ -112,6 +253,11 @@ import { site, navItems } from '../data/site';
     .header__nav,
     .header__cta {
       display: block;
+    }
+
+    .header__toggle,
+    .header__panel {
+      display: none;
     }
 
     .header__list {
@@ -140,7 +286,7 @@ import { site, navItems } from '../data/site';
     }
 
     /* Current-page state — the one approved functional use of terracotta
-     * as a state indicator (design-system.md §16). Never a background pill. */
+     * (design-system.md §16). Never a background pill. */
     .header__link[aria-current='page'] {
       font-weight: var(--font-weight-semibold);
       border-bottom-color: var(--color-terracotta);
@@ -149,15 +295,52 @@ import { site, navItems } from '../data/site';
 </style>
 
 <script>
-  // Minimal, dependency-free: toggles the header's scrolled state.
-  // Passive listener so scrolling is never blocked.
   const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
 
+  // Scrolled "settled" state on the header.
   if (header) {
-    const update = () => {
+    const updateScrolled = () => {
       header.dataset.scrolled = window.scrollY > 40 ? 'true' : 'false';
     };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
+    updateScrolled();
+    window.addEventListener('scroll', updateScrolled, { passive: true });
+  }
+
+  if (header && toggle && panel && label) {
+    const setMenu = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      panel.hidden = !open;
+      header.dataset.menuOpen = String(open);
+      label.textContent = open ? 'Fechar menu' : 'Abrir menu';
+      // Lock background scroll only while the panel is open.
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    toggle.addEventListener('click', () => {
+      setMenu(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Escape closes the menu and returns focus to the trigger.
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setMenu(false);
+        toggle.focus();
+      }
+    });
+
+    // Following a link closes the panel (anchor links stay on the same page).
+    panel.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setMenu(false);
+    });
+
+    // If the viewport grows past the desktop breakpoint while the panel is
+    // open, reset state so the scroll lock can never get stranded.
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches) setMenu(false);
+    });
   }
 </script>

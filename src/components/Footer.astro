@@ -1,0 +1,159 @@
+---
+/**
+ * Footer — the quiet conclusion of the page.
+ * design-system.md §25.
+ *
+ * Deliberately NOT another content section: no CTA (the Contact block above
+ * carries the third and final approved placement), no photography, no
+ * credentials restatement beyond the two registration numbers, no slogan.
+ *
+ * Nothing here is invented: no social accounts, no email (site.ts keeps
+ * `contact.email` null), no awards, no experience figures, no patient counts.
+ */
+import Container from './Container.astro';
+import { site, navItems, contact, credentials } from '../data/site';
+import { footerSection } from '../data/contact-section';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <Container>
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <p class="footer__name">{site.name}</p>
+        <p class="footer__role">{site.role}</p>
+      </div>
+
+      <nav class="footer__nav" aria-label={footerSection.navLabel}>
+        <ul class="footer__list">
+          {
+            navItems.map((item) => (
+              <li>
+                <a class="footer__link" href={item.href}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__meta">
+        <p class="footer__label">{footerSection.credentialsLabel}</p>
+        <ul class="footer__credentials">
+          {
+            credentials.cffaSpecializations.map((item) => (
+              <li>
+                {item.title} — <span class="tabular">{item.registration}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer__legal">
+      <span>© {year} {site.name}</span>
+      <span class="footer__sep" aria-hidden="true">·</span>
+      <span>{contact.addressDistrict}, {contact.addressLocality} — {contact.addressRegion}</span>
+    </p>
+  </Container>
+</footer>
+
+<style>
+  .footer {
+    padding-block: var(--space-2xl) var(--space-xl);
+    background-color: var(--color-bg-alt);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .footer__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .footer__name {
+    font-family: var(--font-display);
+    font-size: var(--font-size-wordmark);
+    line-height: 1.15;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+  }
+
+  .footer__role {
+    font-size: var(--font-size-eyebrow);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .footer__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer__link {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--target-min);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .footer__link:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .footer__label {
+    font-size: var(--font-size-eyebrow);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-block-end: var(--space-2xs);
+  }
+
+  .footer__credentials {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-small);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+  }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-xl);
+    padding-block-start: var(--space-md);
+    border-block-start: 1px solid var(--color-border);
+    font-size: var(--font-size-small);
+    color: var(--color-text-muted);
+  }
+
+  .footer__sep {
+    color: var(--color-terracotta);
+  }
+
+  @media (min-width: 1024px) {
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 4fr 4fr 4fr;
+      gap: var(--space-xl);
+      align-items: start;
+    }
+  }
+</style>

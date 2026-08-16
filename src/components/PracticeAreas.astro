@@ -1,0 +1,185 @@
+---
+/**
+ * Áreas de Atuação — editorial blocks, NOT a card grid.
+ * design-system.md §20, content-positioning-brief.md §5.
+ *
+ * STRUCTURE: each area is a row with a narrow label column (name + audience
+ * tag) and a wider description column. Rows are separated by hairline borders.
+ *
+ * HARD RULES (design-system.md §35):
+ *  - No uniform six-card grid. No medical icons. No decorative illustration.
+ *  - ORDER IS FIXED: inquiry-priority order from client-validation A2. This is
+ *    a scan-order decision only, never a statement of relative importance.
+ *  - AFASIA carries identical visual weight to the other five — same type,
+ *    spacing and treatment. It must never be visually downgraded.
+ *  - ORATÓRIA is the single approved tinted module (terracotta-light +
+ *    radius-md). It stays inside this section as one of the six areas — it is
+ *    not a separate service or product.
+ *
+ * CONTENT: every description is the client's own plain-language wording,
+ * verbatim from src/data/practice-areas.ts. Nothing is rewritten into
+ * marketing copy; no symptom, outcome, statistic or age range is invented.
+ */
+import Container from './Container.astro';
+import { practiceAreas, serviceScope } from '../data/practice-areas';
+---
+
+<section class="areas" id="areas-de-atuacao" aria-labelledby="areas-title">
+  <Container>
+    <header class="areas__header">
+      <p class="eyebrow">Áreas de Atuação</p>
+      <h2 class="areas__title" id="areas-title">
+        Em que Simone pode ajudar
+      </h2>
+    </header>
+
+    <ul class="areas__list">
+      {
+        practiceAreas.map((area) => (
+          <li
+            class:list={['area', area.variant === 'coaching' && 'area--coaching']}
+            id={area.id}
+          >
+            <div class="area__label">
+              <h3 class="area__name">{area.name}</h3>
+              <p class="area__audience">{area.audience}</p>
+            </div>
+            <div class="area__body">
+              <p class="area__description">{area.description}</p>
+              {area.variant === 'coaching' && (
+                <p class="area__note">{serviceScope.oratoriaFormat}</p>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    {/* Validated scope notes (client-validation B1, D1). Kept as plain
+        eligibility statements, not claims. */}
+    <div class="areas__scope">
+      <p>
+        <strong>{serviceScope.minimumChildAge}.</strong>{' '}
+        {serviceScope.underMinimumAgeNote}.
+      </p>
+      <p>{serviceScope.onlineEligibility}.</p>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .areas {
+    padding-block: var(--section-padding-block);
+    background-color: var(--color-bg);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .areas__header {
+    margin-block-end: var(--space-xl);
+  }
+
+  .areas__title {
+    margin-block-start: var(--space-2xs);
+    max-inline-size: 20ch;
+  }
+
+  .areas__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Horizontal bleed lets the Oratória tint extend past the text edge while
+   * its text stays aligned with every other row. Kept smaller than the
+   * container gutter so it can never cause horizontal overflow. */
+  .area {
+    --area-bleed: var(--space-sm);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    padding-block: var(--space-lg);
+    border-block-end: 1px solid var(--color-border);
+  }
+
+  .area:last-of-type {
+    border-block-end: 0;
+  }
+
+  .area__name {
+    margin: 0;
+  }
+
+  .area__audience {
+    margin-block-start: var(--space-3xs);
+    font-size: var(--font-size-small);
+    line-height: var(--leading-small);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-small);
+    color: var(--color-text-muted);
+  }
+
+  .area__description {
+    color: var(--color-text);
+    max-inline-size: 62ch;
+  }
+
+  .area__note {
+    margin-block-start: var(--space-2xs);
+    font-size: var(--font-size-small);
+    line-height: var(--leading-small);
+    color: var(--color-text-muted);
+  }
+
+  /* ---- Oratória: the one approved tinted module (design-system.md §20) ----
+   * Restrained: a tint and a radius, nothing more. No border, no shadow,
+   * no separate heading treatment — it stays one of the six areas. */
+  .area--coaching {
+    margin-inline: calc(var(--area-bleed) * -1);
+    padding-inline: var(--area-bleed);
+    background-color: var(--color-terracotta-light);
+    border-radius: var(--radius-md);
+    border-block-end: 0;
+  }
+
+  /* NOTE: the row following the tinted module gets NO special spacing rule.
+   * An earlier version reduced its padding-block-start, which broke Afasia's
+   * required spacing parity with the other five areas (design-system.md §35).
+   * The tint's own radius provides enough separation on its own. */
+
+  .areas__scope {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-xl);
+    padding-block-start: var(--space-md);
+    border-block-start: 1px solid var(--color-border);
+    font-size: var(--font-size-small);
+    line-height: var(--leading-small);
+    color: var(--color-text-muted);
+    max-inline-size: 62ch;
+  }
+
+  .areas__scope strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  /* ---- Desktop: narrow label column + wider description column ---- */
+  @media (min-width: 1024px) {
+    .area {
+      --area-bleed: var(--space-md);
+
+      display: grid;
+      grid-template-columns: 3fr 9fr; /* design-system.md §20 */
+      gap: var(--space-xl);
+      align-items: start;
+      padding-block: var(--space-xl);
+    }
+
+    .area__label {
+      /* Label column holds its own vertical rhythm against the description. */
+      padding-block-start: var(--space-3xs);
+    }
+  }
+</style>

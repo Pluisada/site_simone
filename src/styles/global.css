@@ -144,6 +144,20 @@ a:hover {
 }
 
 /* ---------------------------------------------------------------
+ * MOBILE CTA BAR CLEARANCE — design-system.md §26
+ * The bar is fixed to the viewport bottom on <1024px. Space for it is
+ * reserved permanently rather than toggled with its visibility, so it can
+ * never overlap page content regardless of scroll state.
+ * ------------------------------------------------------------- */
+@media (max-width: 1023px) {
+  body {
+    padding-block-end: calc(
+      var(--target-comfortable) + var(--space-md) + env(safe-area-inset-bottom, 0px)
+    );
+  }
+}
+
+/* ---------------------------------------------------------------
  * UTILITIES
  * ------------------------------------------------------------- */
 

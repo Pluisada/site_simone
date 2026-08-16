@@ -8,11 +8,13 @@
  *  - font preloads with Vite-resolved (fingerprinted) URLs
  *  - skip link, header, <main> landmark
  *
- * PHASE 1 SCOPE: Footer and the mobile CTA bar are NOT included yet —
- * they are Phase 2 deliverables (design-system.md §25, §26).
+ * Footer (design-system.md §25) and the persistent mobile CTA bar (§26)
+ * are shared across every page and live here.
  */
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
+import MobileCTABar from '../components/MobileCTABar.astro';
+import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
 // Importing the font files lets Vite emit fingerprinted URLs we can preload.
@@ -29,9 +31,10 @@ interface Props {
   path?: string;
   ogImage?: string;
   noindex?: boolean;
+  jsonLd?: string;
 }
 
-const { title, description, path, ogImage, noindex } = Astro.props;
+const { title, description, path, ogImage, noindex, jsonLd } = Astro.props;
 ---
 
 <!doctype html>
@@ -43,6 +46,7 @@ const { title, description, path, ogImage, noindex } = Astro.props;
       path={path}
       ogImage={ogImage}
       noindex={noindex}
+      jsonLd={jsonLd}
     />
 
     {/* Above-the-fold faces: Inter for body copy, Fraunces for the H1.
@@ -60,6 +64,8 @@ const { title, description, path, ogImage, noindex } = Astro.props;
       <slot />
     </main>
 
-    {/* Footer and MobileCTABar: Phase 2 */}
+    <Footer />
+
+    <MobileCTABar />
   </body>
 </html>

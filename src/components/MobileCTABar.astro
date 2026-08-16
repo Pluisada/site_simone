@@ -1,0 +1,148 @@
+---
+/**
+ * MobileCTABar — persistent WhatsApp CTA for mobile/tablet.
+ * design-system.md §26.
+ *
+ * RULES:
+ *  - <1024px only; there is NO desktop equivalent and no floating bubble.
+ *  - Not present on the initial Hero viewport; fades in once the visitor
+ *    scrolls past the Hero.
+ *  - Same visual tokens as the primary CTA — it is the same button, made
+ *    full-width and fixed, never a differently-styled variant.
+ *  - No pulse, no bounce, no notification badge (§26, §31).
+ *
+ * Space for the bar is reserved permanently on mobile via a body padding
+ * token (see global.css), so the bar can never obscure page content
+ * regardless of its visible state.
+ */
+import { site, whatsapp } from '../data/site';
+import { hero } from '../data/hero';
+---
+
+<div class="mobile-cta" data-mobile-cta hidden>
+  <a
+    class="mobile-cta__link"
+    href={whatsapp.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`Conversar no WhatsApp com ${site.name}`}
+  >
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="currentColor"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 016.988 2.896 9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+      ></path>
+    </svg>
+    <span>{hero.ctaLabel}</span>
+  </a>
+</div>
+
+<style>
+  .mobile-cta {
+    position: fixed;
+    inset-block-end: 0;
+    inset-inline: 0;
+    z-index: 40;
+    background-color: var(--color-bg);
+    border-block-start: 1px solid var(--color-border);
+    padding: var(--space-2xs) var(--container-padding);
+    /* iOS home-indicator safe area */
+    padding-block-end: calc(var(--space-2xs) + env(safe-area-inset-bottom, 0px));
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--easing-standard);
+  }
+
+  .mobile-cta[hidden] {
+    display: none;
+  }
+
+  .mobile-cta[data-visible='true'] {
+    opacity: 1;
+  }
+
+  .mobile-cta__link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    inline-size: 100%;
+    min-block-size: var(--target-comfortable); /* 48px */
+    padding: var(--space-xs) var(--space-md);
+    background-color: var(--color-cta);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--font-size-button);
+    line-height: var(--leading-button);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-button);
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--easing-standard);
+  }
+
+  .mobile-cta__link:hover {
+    background-color: var(--color-cta-hover);
+    color: var(--color-on-primary);
+  }
+
+  /* No desktop equivalent — design-system.md §26. */
+  @media (min-width: 1024px) {
+    .mobile-cta {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-mobile-cta]');
+  /**
+   * Sections that carry their own visible CTA. The bar exists to cover the
+   * stretch where none is on screen, so it steps aside while any of these is
+   * in view: the Hero (start of the page) and the Contact block (end of it).
+   * Matching on both selectors keeps the Hero markup untouched.
+   */
+  const sentinels = document.querySelectorAll<HTMLElement>('[data-hero], [data-cta-sentinel]');
+  const mobile = window.matchMedia('(max-width: 1023px)');
+
+  if (bar && sentinels.length > 0) {
+    const onScreen = new Set<Element>();
+
+    const apply = () => {
+      const show = mobile.matches && onScreen.size === 0;
+      bar.hidden = !show;
+      // Next frame, so the opacity transition has a start value to run from.
+      requestAnimationFrame(() => {
+        bar.dataset.visible = String(show);
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) onScreen.add(entry.target);
+          else onScreen.delete(entry.target);
+        }
+        apply();
+      },
+      { rootMargin: '0px', threshold: 0 },
+    );
+
+    for (const sentinel of sentinels) observer.observe(sentinel);
+
+    // Crossing into desktop hides the bar immediately.
+    mobile.addEventListener('change', (event) => {
+      if (!event.matches) {
+        bar.hidden = true;
+        bar.dataset.visible = 'false';
+      } else {
+        apply();
+      }
+    });
+  }
+</script>

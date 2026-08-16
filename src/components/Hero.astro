@@ -1,0 +1,217 @@
+---
+/**
+ * Hero — approved Direction C: asymmetric hybrid portrait + positioning.
+ * design-direction.md §9 (Direction C) and design-system.md §19.
+ *
+ * Desktop (>=1024px): two-column asymmetric grid, ~58% text / ~42% portrait,
+ * both visible in the first viewport at 1280x800 without scrolling.
+ *
+ * Below 1024px: single column, MESSAGE FIRST -> CTA -> PORTRAIT. This is a
+ * deliberate recomposition, not a shrunk desktop layout (§32).
+ *
+ * CONTENT: every line below is assembled from client-validated facts only
+ * (see src/data/hero.ts for per-line source citations). No marketing claim,
+ * statistic, or superlative appears here. Final copy polish still requires
+ * client approval — see content-positioning-brief.md §6.
+ */
+import { Image } from 'astro:assets';
+import Container from './Container.astro';
+import Button from './Button.astro';
+import { site } from '../data/site';
+import { hero } from '../data/hero';
+// Primary portrait (640×800). Distinct from the contextual portrait used in
+// "Quem é Simone" — see src/data/assets.ts for provenance and status.
+import portrait from '../assets/images/hero-portrait-4x5.jpg';
+---
+
+{/* data-hero is the scroll sentinel the mobile CTA bar observes (§26). */}
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <Container class="hero__inner">
+    <div class="hero__content">
+      <p class="hero__audience">
+        {
+          hero.audienceCue.map((cue, index) => (
+            <>
+              {index > 0 && <span class="hero__sep" aria-hidden="true">·</span>}
+              <span>{cue}</span>
+            </>
+          ))
+        }
+      </p>
+
+      <h1 class="hero__title" id="hero-title">{hero.headline}</h1>
+
+      <p class="hero__support measure">{hero.supportingMessage}</p>
+
+      <p class="hero__credibility">
+        {hero.credibilityCue}
+      </p>
+
+      <div class="hero__cta">
+        <Button whatsapp ariaLabel={`Conversar no WhatsApp com ${site.name}`}>
+          {hero.ctaLabel}
+        </Button>
+      </div>
+    </div>
+
+    <div class="hero__figure">
+      <Image
+        src={portrait}
+        alt={hero.portraitAlt}
+        widths={[320, 440, 640]}
+        sizes="(min-width: 1024px) 420px, min(320px, 80vw)"
+        loading="eager"
+        fetchpriority="high"
+        class="hero__portrait"
+      />
+    </div>
+  </Container>
+</section>
+
+<style>
+  .hero {
+    /* Slightly tighter than the default section rhythm so the whole hero,
+     * including the CTA, clears the fold at 1280x800 (design-system.md §19). */
+    padding-block: var(--space-xl) var(--space-2xl);
+    background-color: var(--color-bg);
+  }
+
+  .hero :global(.hero__inner) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Audience cue sits above the headline as a quiet orienting line. */
+  .hero__audience {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2xs);
+    margin-block-end: var(--space-md);
+    font-size: var(--font-size-eyebrow);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .hero__sep {
+    color: var(--color-terracotta);
+  }
+
+  .hero__title {
+    max-inline-size: 16ch;
+  }
+
+  .hero__support {
+    margin-block-start: var(--space-md);
+    color: var(--color-text);
+  }
+
+  .hero__credibility {
+    margin-block-start: var(--space-md);
+    padding-inline-start: var(--space-sm);
+    border-inline-start: 2px solid var(--color-terracotta);
+    font-size: var(--font-size-small);
+    line-height: var(--leading-small);
+    color: var(--color-text-muted);
+    max-inline-size: 46ch;
+  }
+
+  .hero__cta {
+    margin-block-start: var(--space-lg);
+  }
+
+  /* ---- Portrait ----
+   * Natural background, moderate radius, no overlay, no gradient (§27). */
+  .hero__figure {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero__portrait {
+    inline-size: min(320px, 80vw);
+    block-size: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  /* ---- Desktop: asymmetric two-column ---- */
+  @media (min-width: 1024px) {
+    .hero {
+      padding-block: var(--space-2xl) var(--space-3xl);
+    }
+
+    .hero :global(.hero__inner) {
+      display: grid;
+      /* ~58% / ~42% — design-system.md §11 */
+      grid-template-columns: 7fr 5fr;
+      align-items: center;
+      gap: var(--space-3xl);
+    }
+
+    .hero__portrait {
+      /* Capped so the hero clears the fold at 1280x800. */
+      inline-size: 420px;
+      max-inline-size: 100%;
+    }
+
+    .hero__figure {
+      /* Deliberate asymmetry: the portrait sits slightly low against the
+       * text column rather than perfectly centered (design-direction.md §6). */
+      justify-content: flex-end;
+      transform: translateY(var(--space-md));
+    }
+  }
+
+  /* ---- Motion: single subtle entrance, opt-in only (design-system.md §31) ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__content > *,
+    .hero__figure {
+      animation: hero-enter var(--duration-slow) var(--easing-standard) both;
+    }
+
+    .hero__figure {
+      animation-delay: 80ms;
+    }
+  }
+
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(var(--distance-reveal));
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* The desktop figure carries a static offset; keep it through the animation. */
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+    @keyframes hero-enter-figure {
+      from {
+        opacity: 0;
+        transform: translateY(calc(var(--space-md) + var(--distance-reveal)));
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(var(--space-md));
+      }
+    }
+
+    .hero__figure {
+      animation-name: hero-enter-figure;
+    }
+  }
+</style>

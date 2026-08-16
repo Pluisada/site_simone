@@ -79,6 +79,9 @@
   --leading-button: 1.2;
   --font-size-credential: 0.9375rem; /* 15px, tabular */
   --leading-credential: 1.4;
+  /* Header wordmark. Not in the design-system.md §6 table (that table covers
+   * content type roles); tokenized here so no component hardcodes a size. */
+  --font-size-wordmark: 1.125rem; /* 18px */
 
   --tracking-h1: -0.01em;
   --tracking-h2: -0.005em;
@@ -114,6 +117,27 @@
   --container-padding: 1.25rem; /* 20px mobile gutter */
   --grid-columns: 12;
   --grid-gutter: 1rem; /* 16px mobile */
+
+  /* ---------------------------------------------------------------
+   * BREAKPOINTS — design-system.md §12
+   *
+   * DOCUMENTATION TOKENS. CSS does not permit custom properties inside a
+   * media-query condition, so every @media below must repeat the literal
+   * value. These exist so the authoritative numbers live in one place and
+   * are greppable; the same list is exported from src/data/site.ts for JS.
+   *
+   *   mobile   0–767px    base styles (mobile-first)
+   *   tablet   768–1023px shares the mobile composition (§32)
+   *   desktop  1024px+    desktop composition activates
+   *   wide     1280px+    width capped by --container-max; extra becomes margin
+   *
+   * Only the 1024px boundary currently needs media queries. Per §32 tablet
+   * intentionally shares the mobile composition, and `wide` is handled by
+   * --container-max. Do NOT add empty media queries just to use every value.
+   * ------------------------------------------------------------- */
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1280px;
 
   /* ---------------------------------------------------------------
    * RADIUS — design-system.md §13

@@ -3,14 +3,14 @@
  * SEO — reusable head mechanism.
  * technical-architecture.md §8.
  *
- * Provides: title, description, canonical, Open Graph, Twitter card,
- * language and viewport wiring. Structured data is NOT emitted here —
+ * Provides: title, description, canonical, favicon, Open Graph, Twitter
+ * card, language and viewport wiring. Structured data is NOT emitted here —
  * JSON-LD is deferred to Phase 2+ and must be built from validated data only
  * (never fabricated; aggregateRating/review are explicitly forbidden).
  *
  * Metadata VALUES are still placeholders — final copy is a Phase 2 deliverable.
  */
-import { site } from '../data/site';
+import { site, theme } from '../data/site';
 
 interface Props {
   title?: string;
@@ -20,6 +20,8 @@ interface Props {
   /** Open Graph image URL. Defaults to none until a validated asset is chosen. */
   ogImage?: string;
   noindex?: boolean;
+  /** Serialized JSON-LD graph. Built by src/lib/schema.ts, never inline. */
+  jsonLd?: string;
 }
 
 const {
@@ -28,6 +30,7 @@ const {
   path = Astro.url.pathname,
   ogImage,
   noindex = false,
+  jsonLd,
 } = Astro.props;
 
 // Astro.site comes from the `site` field in astro.config.mjs (SITE_URL env var).
@@ -42,10 +45,21 @@ const ogImageUrl = ogImage && Astro.site ? new URL(ogImage, Astro.site).href : o
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
 
+{/* Favicon. Files live in public/ and are served verbatim at the root by
+    Astro's static build, so these are plain root paths, not imports.
+    favicon.svg is a monogram of the existing wordmark — the site's own
+    approved colors (design-system.md §4), not a new visual identity; see
+    the comment in public/favicon.svg for why. favicon.ico is the same
+    artwork rasterized, for browsers that don't support SVG favicons. */}
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="any" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
-{/* Theme color uses the primary teal token value (design-system.md §4). */}
-<meta name="theme-color" content="#1F3E3B" />
+{/* Mirrors --color-primary; <meta> cannot read a CSS custom property.
+    Centralized in src/data/site.ts (theme.themeColor). */}
+<meta name="theme-color" content={theme.themeColor} />
 
 {/* Open Graph */}
 <meta property="og:type" content="website" />
@@ -61,6 +75,12 @@ const ogImageUrl = ogImage && Astro.site ? new URL(ogImage, Astro.site).href : o
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+{/* Structured data. Contains no rating, review, opening-hours or price data —
+    see src/lib/schema.ts for the prohibitions and their reasons. */}
+{/* is:inline keeps Astro from treating this as a client script to bundle —
+    JSON-LD must stay in the document head as-is. */}
+{jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
 
 {/* Font preloads are emitted by BaseLayout, which imports the font assets so
     Vite can resolve their fingerprinted URLs (a hardcoded path would break). */}

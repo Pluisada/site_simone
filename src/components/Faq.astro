@@ -1,0 +1,192 @@
+---
+/**
+ * FAQ — accessible accordion.
+ * design-system.md §24, content-positioning-brief.md §12.
+ *
+ * IMPLEMENTATION: native <details name="faq"> / <summary>. The shared `name`
+ * gives exclusive one-open-at-a-time behaviour with ZERO JavaScript, and the
+ * browser provides the expanded/collapsed state to assistive technology
+ * natively — so no manual aria-expanded is added (it would duplicate, and
+ * potentially conflict with, the native state).
+ * No accordion library, no component library, no new dependency.
+ *
+ * CONTENT: only entries whose answer is validated are rendered. faq.ts
+ * currently carries one entry (`significado-titulos`) with `answer: null`
+ * and a TODO — it is filtered out here rather than invented. See the report.
+ *
+ * NO CTA in this section: the approved strategy has exactly three placements
+ * (hero, after Áreas de Atuação, footer). A fourth would break §15/§35.
+ */
+import Container from './Container.astro';
+import { faqItems } from '../data/faq';
+
+/** Only validated answers reach the page. Unresolved entries stay in the
+ *  data file with their TODO and are never rendered as copy. */
+const answered = faqItems.filter((item) => item.answer !== null);
+---
+
+<section class="faq" id="perguntas-frequentes" aria-labelledby="faq-title">
+  <Container>
+    <div class="faq__header">
+      <p class="eyebrow">Perguntas frequentes</p>
+      <h2 class="faq__title" id="faq-title">Dúvidas comuns antes do primeiro contato</h2>
+    </div>
+
+    <div class="faq__list">
+      {
+        answered.map((item) => (
+          <details class="qa" name="faq" id={`faq-${item.id}`}>
+            <summary class="qa__summary">
+              <h3 class="qa__question">{item.question}</h3>
+              {/* Rotation + the open panel convey state; colour is never the
+                  only cue (design-system.md §30). */}
+              <svg
+                class="qa__chevron"
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="qa__answer">
+              <p>{item.answer}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </Container>
+</section>
+
+<style>
+  .faq {
+    padding-block: var(--section-padding-block);
+    /* Warm-sand: alternates against the cream Como Funciona block above. */
+    background-color: var(--color-bg-alt);
+  }
+
+  .faq__header {
+    margin-block-end: var(--space-xl);
+  }
+
+  .faq__title {
+    margin-block-start: var(--space-2xs);
+    max-inline-size: 22ch;
+  }
+
+  .faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xs);
+    /* Wide enough to close the dead space the reading-measure cap left on
+     * desktop (704px inside a 1200px container), but still short of the
+     * full container so the list reads as a deliberate column, not a
+     * full-bleed stretch. --container-text now caps .qa__answer directly
+     * below, which is what §10 actually means by "FAQ answers". */
+    max-inline-size: calc(var(--container-max) - var(--space-3xl) * 2);
+  }
+
+  /* One of only two approved card-like surfaces in the system (§33).
+   * Restrained: a panel fill, a hairline and a moderate radius — no shadow. */
+  .qa {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  .qa__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    /* Comfortably above the 44px floor across the whole row. */
+    min-block-size: var(--target-comfortable);
+    padding: var(--space-sm) var(--space-md);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  /* Remove the native disclosure triangle; the chevron replaces it. */
+  .qa__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .qa__summary::marker {
+    content: '';
+  }
+
+  .qa__summary:focus-visible {
+    outline: var(--focus-ring-width) solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-md);
+  }
+
+  .qa__question {
+    /* Body scale, not heading scale: the FAQ must not out-shout the practice
+     * areas or the Hero. */
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--font-size-body);
+    line-height: var(--leading-snug);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-body);
+    color: var(--color-text);
+  }
+
+  .qa__chevron {
+    flex: none;
+    color: var(--color-primary);
+    transition: transform var(--duration-base) var(--easing-standard);
+  }
+
+  .qa[open] .qa__chevron {
+    transform: rotate(180deg);
+  }
+
+  .qa[open] .qa__question {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .qa__answer {
+    padding: 0 var(--space-md) var(--space-md);
+    color: var(--color-text);
+    font-size: var(--font-size-small);
+    line-height: var(--leading-relaxed);
+    /* The reading-measure cap belongs here, on the answer copy itself
+     * (design-system.md §10: "measure cap for body-copy blocks (FAQ
+     * answers, ...)"), not on the outer list — now that the list is wider,
+     * this keeps answer paragraphs from running the full panel width. */
+    max-inline-size: var(--container-text);
+  }
+
+  /* Smooth open/close where the browser supports animating to auto height.
+   * Unsupported browsers simply open instantly — no JS fallback needed. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      :global(:root) {
+        interpolate-size: allow-keywords;
+      }
+
+      .qa::details-content {
+        block-size: 0;
+        overflow: hidden;
+        transition:
+          block-size var(--duration-base) var(--easing-standard),
+          content-visibility var(--duration-base) allow-discrete;
+      }
+
+      .qa[open]::details-content {
+        block-size: auto;
+      }
+    }
+  }
+</style>

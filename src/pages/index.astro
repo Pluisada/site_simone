@@ -1,60 +1,103 @@
 ---
 /**
- * Homepage — PHASE 1 FOUNDATION ONLY.
+ * Homepage.
  *
- * The real homepage sections (Hero, Áreas de Atuação, Quem é Simone,
- * Como Funciona, Avaliações, FAQ, CTA/Contato) are Phase 2+ deliverables and
- * are deliberately NOT implemented here.
+ * PHASE 2E SCOPE: page shell + Header + Hero + Áreas de Atuação
+ * + CTA (2nd approved placement) + Quem é Simone/credenciais
+ * + Como Funciona + Google Reviews + FAQ + Contato + Footer
+ * + persistent mobile CTA bar. Homepage is now structurally complete.
  *
- * What this page currently does:
- *  - exercises BaseLayout / Header / Section / Container / Button
- *  - verifies the astro:assets image pipeline against the real portrait
- * It is scaffolding, not design work, and will be replaced in Phase 2.
+ * GOOGLE REVIEWS SOCIAL PROOF PHASE (2026-08-16): added <SocialProof />
+ * between Hero and Áreas de Atuação as the PRIMARY Google Reviews treatment
+ * (client-validated rating/count — docs/design/google-reviews-social-proof-
+ * options.md, Alternative B). The original inline link inside
+ * AboutCredentials stays as a lighter secondary echo — see that component's
+ * own comment.
+ *
+ * Page metadata below (title/description) is CLIENT-APPROVED 2026-08-16 —
+ * see src/data/site.ts (defaultTitle/defaultDescription) for the same
+ * approved values, the source of truth for future pages.
  */
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Section from '../components/Section.astro';
+import Hero from '../components/Hero.astro';
+import SocialProof from '../components/SocialProof.astro';
+import PracticeAreas from '../components/PracticeAreas.astro';
+import AboutCredentials from '../components/AboutCredentials.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Faq from '../components/Faq.astro';
+import Contact from '../components/Contact.astro';
+import { buildHomepageSchema } from '../lib/schema';
+import ogPortrait from '../assets/images/hero-portrait-4x5.jpg';
+
 import Container from '../components/Container.astro';
-import portrait from '../assets/images/simone-portrait-source.jpg';
+import Button from '../components/Button.astro';
+import { site } from '../data/site';
+import { hero } from '../data/hero';
+
+/**
+ * Structured data is generated from the validated data layer, so it can never
+ * state something the visible page does not. See src/lib/schema.ts for what is
+ * deliberately NOT emitted (rating, review, opening hours, price).
+ */
+const jsonLd = buildHomepageSchema(Astro.site, ogPortrait.src);
 ---
 
-<BaseLayout>
-  <Section>
-    <Container>
-      <p class="eyebrow">Fase 1 — Fundação técnica</p>
-      <h1>[POSITIONING_HEADLINE]</h1>
-      <p class="measure intro">
-        Scaffold do projeto e design system implementados. As seções da homepage
-        serão construídas na Fase 2.
-      </p>
+<BaseLayout
+  jsonLd={jsonLd}
+  ogImage={ogPortrait.src}
+  title="Simone Tavolaro | Fonoaudióloga em Alphaville, Barueri"
+  description="Atendimento fonoaudiológico particular e on-line em Alphaville, Barueri, para crianças, adolescentes e adultos: linguagem, fala, fluência e oratória."
+>
+  <Hero />
+  <SocialProof />
+  <PracticeAreas />
 
-      {/*
-        Image pipeline verification against the real portrait asset.
-        NOT the hero. The approved 4:5 crop and eager/fetchpriority="high"
-        loading are applied when the Hero is built (design-system.md §19, §27).
-      */}
-      <Image
-        src={portrait}
-        alt="Simone Tavolaro, fonoaudióloga, em seu consultório"
-        widths={[320, 640]}
-        sizes="(min-width: 1024px) 320px, 60vw"
-        loading="lazy"
-        class="portrait-check"
-      />
+  {/*
+    Second of the three approved in-page CTA placements
+    (design-system.md §4/§11: hero → after Áreas de Atuação → footer).
+
+    It lives here rather than inside PracticeAreas.astro so that section's
+    own composition stays untouched, and it carries the Áreas background so
+    it reads as the close of that section rather than a separate band.
+
+    DESKTOP ONLY (>=1024px). Below that the persistent bottom CTA bar
+    (design-system.md §26) is already on screen from the moment the visitor
+    leaves the Hero — rendering an identical button here as well would put
+    two of the same CTA in one viewport. Mobile keeps the single persistent
+    surface, consistent with §18's rule against duplicating the CTA on small
+    screens. No CTA reach is lost on mobile; it is simply not duplicated.
+  */}
+  <div class="cta-after-areas">
+    <Container>
+      <Button whatsapp ariaLabel={`Conversar no WhatsApp com ${site.name}`}>
+        {hero.ctaLabel}
+      </Button>
     </Container>
-  </Section>
+  </div>
+
+  {/* The small Google Reviews link here (design-system.md §23) is now the
+      SECONDARY verification path, adjacent to the credential block — the
+      primary treatment is <SocialProof /> right after the Hero. Kept
+      intentionally, not duplicated, not removed; see SocialProof.astro's
+      own comment and docs/design/google-reviews-social-proof-options.md §7. */}
+  <AboutCredentials />
+  <HowItWorks />
+  <Faq />
+  <Contact />
 </BaseLayout>
 
 <style>
-  .intro {
-    margin-top: var(--space-sm);
-    color: var(--color-text-muted);
+  .cta-after-areas {
+    display: none;
+    background-color: var(--color-bg);
+    /* No top padding: the Áreas section's own bottom padding already provides
+     * the separation, so the button reads as belonging to it. */
+    padding-block: 0 var(--space-3xl);
   }
 
-  .portrait-check {
-    margin-top: var(--space-lg);
-    width: 240px;
-    height: auto;
-    border-radius: var(--radius-lg);
+  @media (min-width: 1024px) {
+    .cta-after-areas {
+      display: block;
+    }
   }
 </style>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Simone Tavolaro">
+  <!--
+    Favicon: monogram of the existing wordmark, not a new visual identity.
+    Colors are the site's own approved tokens (design-system.md §4):
+    background is color.cream (#F7F2E9, the "bg" token), glyph is
+    color.primary (#1F3E3B), the exact pairing already used for the header
+    wordmark ("Simone Tavolaro"). No logo asset exists to reuse
+    (src/data/assets.ts: the one prior logo file is status "rejected",
+    a flattened raster with no transparency, unusable). The serif "S"
+    stands in for Fraunces (the site's display face) using a system serif
+    stack, since favicons render outside the page's own font-face context.
+  -->
+  <rect width="64" height="64" rx="8" fill="#F7F2E9" />
+  <text
+    x="33"
+    y="48"
+    text-anchor="middle"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="700"
+    font-size="48"
+    fill="#1F3E3B"
+  >S</text>
+</svg>

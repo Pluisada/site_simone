@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 /**
  * Landpage Simone — Astro configuration.
@@ -23,6 +24,7 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  integrations: [sitemap()],
   image: {
     // Explicit: build-time optimization, no runtime image service.
     responsiveStyles: true,

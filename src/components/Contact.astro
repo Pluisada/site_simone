@@ -1,0 +1,169 @@
+---
+/**
+ * Contato — final in-page contact block.
+ * design-system.md §25 (CTA / Contato footer), §4 (3rd CTA placement).
+ *
+ * SCOPE: concise entry point only. It does NOT restate credentials, practice
+ * areas, testimonials, the Google Reviews module, or the online mechanics
+ * already explained in Como Funciona.
+ *
+ * CTA: this is the THIRD and final approved in-page placement (hero → after
+ * Áreas de Atuação → contact/footer). No fourth pattern is introduced.
+ *
+ * MAP: rendered as a LINK to contact.mapsUrl, not an embedded iframe.
+ * design-system.md §25 mentions "address + embedded map", but a Maps embed is
+ * a third-party frame that sets cookies and loads external resources — which
+ * technical-architecture.md §9/§13 deliberately designed the site to avoid
+ * (no third-party scripts, restrictive CSP, LGPD-conscious). The link serves
+ * the same navigational purpose with none of that cost. Reported as a
+ * deliberate deviation.
+ */
+import Container from './Container.astro';
+import Button from './Button.astro';
+import { site, whatsapp, contact } from '../data/site';
+import { serviceScope } from '../data/practice-areas';
+import { contactSection } from '../data/contact-section';
+import { hero } from '../data/hero';
+---
+
+<section class="contact" id="contato" aria-labelledby="contact-title">
+  <Container>
+    <div class="contact__grid">
+      <div class="contact__intro">
+        <p class="eyebrow">{contactSection.eyebrow}</p>
+        <h2 class="contact__title" id="contact-title">{contactSection.heading}</h2>
+        <p class="contact__lead measure">{contactSection.lead}</p>
+
+        {/* data-cta-sentinel sits on the BUTTON, not the section: the
+            persistent mobile bar only needs to step aside while this actual
+            CTA is on screen. Marking the whole section would hide the bar
+            from the top of the FAQ onward (Contact starts peeking in there),
+            costing CTA reach across a section where visitors are resolving
+            objections. */}
+        <div class="contact__cta" data-cta-sentinel>
+          <Button whatsapp ariaLabel={`Conversar no WhatsApp com ${site.name}`}>
+            {hero.ctaLabel}
+          </Button>
+        </div>
+      </div>
+
+      <dl class="details">
+        <div class="details__item">
+          <dt class="details__label">{contactSection.labelWhatsapp}</dt>
+          <dd class="details__value">
+            <a class="details__link tabular" href={whatsapp.href} target="_blank" rel="noopener noreferrer">
+              {whatsapp.displayNumber}
+            </a>
+          </dd>
+        </div>
+
+        <div class="details__item">
+          <dt class="details__label">{contactSection.labelAddress}</dt>
+          <dd class="details__value">
+            <address class="details__address">
+              {contact.addressStreet}<br />
+              {contact.addressBuilding}<br />
+              {contact.addressDistrict}, {contact.addressLocality} — {contact.addressRegion}
+            </address>
+            <a class="details__link" href={contact.mapsUrl} target="_blank" rel="noopener noreferrer">
+              {contactSection.mapLinkText}
+            </a>
+          </dd>
+        </div>
+
+        <div class="details__item">
+          <dt class="details__label">{contactSection.labelHours}</dt>
+          <dd class="details__value">{contact.hoursHuman}</dd>
+        </div>
+
+        <div class="details__item">
+          <dt class="details__label">{contactSection.labelOnline}</dt>
+          <dd class="details__value">{serviceScope.onlineEligibility}</dd>
+        </div>
+      </dl>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .contact {
+    padding-block: var(--section-padding-block);
+    /* Cream, continuing the alternation after the warm-sand FAQ. */
+    background-color: var(--color-bg);
+  }
+
+  .contact__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .contact__title {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .contact__lead {
+    margin-block-start: var(--space-md);
+    color: var(--color-text);
+  }
+
+  .contact__cta {
+    margin-block-start: var(--space-lg);
+  }
+
+  /* ---- Details list ---- */
+  .details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin: 0;
+  }
+
+  .details__item {
+    padding-block-start: var(--space-md);
+    border-block-start: 1px solid var(--color-border);
+  }
+
+  .details__label {
+    font-family: var(--font-body);
+    font-size: var(--font-size-eyebrow);
+    line-height: var(--leading-eyebrow);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .details__value {
+    margin: var(--space-2xs) 0 0;
+    font-size: var(--font-size-small);
+    line-height: var(--leading-normal);
+    color: var(--color-text);
+  }
+
+  .details__address {
+    font-style: normal;
+  }
+
+  .details__link {
+    display: inline-flex;
+    align-items: center;
+    /* Comfortable target without becoming a button. */
+    min-block-size: var(--target-min);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .details__item:nth-child(2) .details__link {
+    margin-block-start: var(--space-2xs);
+  }
+
+  @media (min-width: 1024px) {
+    .contact__grid {
+      display: grid;
+      /* Same asymmetric proportion family used elsewhere on the page. */
+      grid-template-columns: 7fr 5fr;
+      gap: var(--space-3xl);
+      align-items: start;
+    }
+  }
+</style>

@@ -17,9 +17,56 @@ export const site = {
   name: 'Simone Tavolaro',
   role: 'Fonoaudióloga',
   locale: 'pt-BR',
-  /** Not final copy — Phase 2+ deliverable. */
-  defaultTitle: '[SITE_TITLE]',
-  defaultDescription: '[SITE_DESCRIPTION]',
+  /**
+   * Default document metadata (<title>, <meta name="description">, and the
+   * OG/Twitter fallbacks derived from them in SEO.astro). CLIENT-APPROVED
+   * 2026-08-16 — built from validated facts only (credential A1/F1, areas
+   * A1/C1, audiences A2/B1/D1, location G1). This is the SEO <title>/meta
+   * description specifically; it is deliberately worded differently from
+   * the Hero's on-page headline/support copy (src/data/hero.ts), which
+   * serves a different purpose and remains its own source of truth.
+   */
+  defaultTitle: 'Simone Tavolaro | Fonoaudióloga em Alphaville, Barueri',
+  defaultDescription:
+    'Atendimento fonoaudiológico particular e on-line em Alphaville, Barueri, para crianças, adolescentes e adultos: linguagem, fala, fluência e oratória.',
+} as const;
+
+/**
+ * Design values that must exist outside CSS.
+ *
+ * `<meta name="theme-color">` takes a literal color — it cannot read a CSS
+ * custom property — so this is the ONE intentional mirror of a design token
+ * in TypeScript. src/styles/tokens.css remains the source of truth:
+ * if --color-primary ever changes, this value must be updated with it.
+ */
+export const theme = {
+  /** Mirrors --color-primary (docs/design/design-system.md §4). */
+  themeColor: '#1F3E3B',
+} as const;
+
+/**
+ * Breakpoints — docs/design/design-system.md §12.
+ *
+ * CSS does not allow custom properties inside media-query conditions, so
+ * stylesheets must repeat these literal values. They are declared here (and
+ * mirrored as documentation-only tokens in tokens.css) so there is a single
+ * authoritative list, and so any future JS that needs a breakpoint reads it
+ * from here rather than hardcoding its own number.
+ *
+ * Only the 1024px boundary currently has media queries, by design:
+ * per §32, tablet shares the mobile composition and `wide` only caps width,
+ * which --container-max already handles. Do not add empty media queries
+ * merely to make every breakpoint appear in the CSS.
+ */
+export const breakpoints = {
+  /** 0–767px — base/default styles (mobile-first). */
+  mobile: 0,
+  /** 768–1023px — shares the mobile composition (§32). */
+  tablet: 768,
+  /** 1024px+ — desktop composition activates (asymmetric hero, horizontal timeline). */
+  desktop: 1024,
+  /** 1280px+ — content stays capped; extra width becomes margin. */
+  wide: 1280,
 } as const;
 
 /**
@@ -115,6 +162,6 @@ export const credentials = {
 export const navItems = [
   { label: 'Início', href: '/' },
   { label: 'Áreas de Atuação', href: '/#areas-de-atuacao' },
-  { label: 'Sobre', href: '/sobre' },
-  { label: 'Contato', href: '/contato' },
+  { label: 'Sobre', href: '/#sobre' },
+  { label: 'Contato', href: '/#contato' },
 ] as const;

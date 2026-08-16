@@ -1,0 +1,195 @@
+---
+/**
+ * Social Proof — Google Reviews, elevated to a primary early-page module.
+ * docs/design/google-reviews-social-proof-options.md (Alternative B, approved).
+ *
+ * PLACEMENT: Hero -> Social Proof -> Áreas de Atuação. This is now the
+ * PRIMARY visual Google Reviews treatment. The small existing link inside
+ * "Quem é Simone" (AboutCredentials.astro / design-system.md §23) is
+ * unchanged and stays as a lighter secondary echo — never two competing
+ * review modules near the top.
+ *
+ * CONTENT: rating and review count are client-validated (src/data/social-
+ * proof.ts). No excerpt, name, date, avatar or "100%" framing appears here,
+ * and the ~3,833 profile-view figure is deliberately never surfaced.
+ *
+ * STRUCTURED DATA: deliberately none. No aggregateRating/review is added to
+ * src/lib/schema.ts for this — Google's review rich-result feature excludes
+ * self-served business reviews, and the file's existing hard prohibition
+ * already covers this (see its header comment). Validated review data here
+ * is visible page content only.
+ *
+ * ACCESSIBILITY: the number, star icons and count text are three separate
+ * visual fragments but ONE accessible unit — each fragment is aria-hidden
+ * and a single .visually-hidden sentence (googleReviews.accessibleSummary)
+ * carries the real accessible name, so a screen reader hears "5,0 de 5. 43
+ * avaliações no Google." once, not three fragmented announcements. The
+ * stars are supplementary only — the numeral is the primary representation
+ * (design-system.md §30: never convey information by a symbol/color alone).
+ *
+ * COMPOSITION: five children (eyebrow, heading, rating block, supporting
+ * text, link) sit in this exact reading order in the DOM — a deliberate
+ * mobile-first order that already puts the rating right after the heading,
+ * not buried under paragraphs (mobile just stacks it, no reordering
+ * needed). Desktop uses CSS Grid *named areas* to place heading+text on the
+ * left and rating+link on the right (design-system.md §11's established
+ * 7fr/5fr asymmetric family, the same ratio Hero and Contact already use) —
+ * grid-area placement changes visual position only, never DOM/tab order.
+ *
+ * MOTION: none. Matches the majority of the page's own sections (Áreas,
+ * Sobre, FAQ, Contato all ship with no entrance animation) rather than
+ * introducing a new pattern — only Hero and Como Funciona use one, for
+ * reasons specific to those sections.
+ */
+import Container from './Container.astro';
+import Button from './Button.astro';
+import { contact } from '../data/site';
+import { socialProofSection, googleReviews } from '../data/social-proof';
+---
+
+<section class="social-proof" id="avaliacoes-google" aria-labelledby="social-proof-title">
+  <Container>
+    <div class="social-proof__grid">
+      <p class="eyebrow social-proof__eyebrow">{socialProofSection.eyebrow}</p>
+
+      <h2 class="social-proof__title" id="social-proof-title">
+        {socialProofSection.heading}
+      </h2>
+
+      {/* One accessible unit: number + stars + count are aria-hidden
+          fragments; the .visually-hidden sentence is what AT announces. */}
+      <p class="social-proof__rating">
+        <span class="social-proof__number" aria-hidden="true">{googleReviews.ratingDisplay}</span>
+        <span class="social-proof__stars" aria-hidden="true">
+          {
+            Array.from({ length: 5 }).map(() => (
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" focusable="false">
+                <path d="M12 3.5l2.6 5.3 5.9.85-4.25 4.15 1 5.85L12 16.9l-5.25 2.75 1-5.85L3.5 9.65l5.9-.85z" />
+              </svg>
+            ))
+          }
+        </span>
+        <span class="social-proof__count" aria-hidden="true">{googleReviews.reviewCountDisplay}</span>
+        <span class="visually-hidden">{googleReviews.accessibleSummary}</span>
+      </p>
+
+      <p class="social-proof__text measure">{socialProofSection.supportingText}</p>
+
+      <div class="social-proof__cta">
+        <Button variant="ghost" href={contact.mapsUrl}>
+          {socialProofSection.linkLabel} <span aria-hidden="true">→</span>
+        </Button>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .social-proof {
+    padding-block: var(--section-padding-block);
+    /* Sand, between the Hero's cream and Áreas' cream — a deliberate
+     * three-beat opening (cream / sand / cream) rather than one long cream
+     * stretch before the first background alternation. */
+    background-color: var(--color-bg-alt);
+  }
+
+  .social-proof__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .social-proof__title {
+    margin-block-start: var(--space-2xs);
+    max-inline-size: 22ch;
+  }
+
+  /* ---- Rating: one visual block, one accessible sentence ---- */
+  .social-proof__rating {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2xs) var(--space-sm);
+    margin-block-start: var(--space-md);
+    /* The same restrained "pay attention here" marker already used for the
+     * Hero credibility line and the Como Funciona online-mechanics note —
+     * not a new use of terracotta, the same one, applied here. */
+    padding-inline-start: var(--space-sm);
+    border-inline-start: 2px solid var(--color-terracotta);
+  }
+
+  .social-proof__number {
+    font-family: var(--font-body);
+    font-size: var(--font-size-h2);
+    line-height: 1;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+  }
+
+  .social-proof__stars {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    color: var(--color-primary);
+  }
+
+  .social-proof__count {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+  }
+
+  .social-proof__text {
+    margin-block-start: var(--space-2xs);
+    color: var(--color-text);
+  }
+
+  .social-proof__cta {
+    margin-block-start: var(--space-sm);
+  }
+
+  /* ---- Desktop: asymmetric two-column composition ----
+   * Same 7fr/5fr family already used by Hero and Contact (design-
+   * system.md §11) — left column carries the narrative (heading +
+   * supporting line), right column carries the proof (rating + link).
+   * Grid-area placement only changes visual position, never DOM/tab
+   * order — the reading/focus order stays eyebrow -> heading -> rating ->
+   * text -> link exactly as written above. */
+  @media (min-width: 1024px) {
+    .social-proof__grid {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: var(--space-sm) var(--space-3xl);
+      grid-template-areas:
+        'eyebrow  eyebrow'
+        'heading  rating'
+        'text     rating'
+        'text     cta';
+      align-items: start;
+    }
+
+    .social-proof__eyebrow {
+      grid-area: eyebrow;
+    }
+
+    .social-proof__title {
+      grid-area: heading;
+      max-inline-size: none;
+    }
+
+    .social-proof__rating {
+      grid-area: rating;
+      margin-block-start: 0;
+    }
+
+    .social-proof__text {
+      grid-area: text;
+      align-self: start;
+    }
+
+    .social-proof__cta {
+      grid-area: cta;
+      align-self: end;
+    }
+  }
+</style>

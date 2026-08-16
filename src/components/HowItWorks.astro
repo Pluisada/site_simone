@@ -1,0 +1,263 @@
+---
+/**
+ * Como Funciona — connected numbered timeline.
+ * design-system.md §22, content-positioning-brief.md §8.
+ *
+ * HARD RULES:
+ *  - Timeline, NOT cards. Four steps are never independent boxes
+ *    (a card grid here would be the page's fourth card pattern).
+ *  - Horizontal on desktop, vertical below 1024px. Never a carousel and
+ *    never horizontally scrollable.
+ *  - Online mechanics attach to step 02 only — no second parallel timeline.
+ *  - No CTA here. The approved strategy has exactly three CTA placements
+ *    (hero, after Áreas de Atuação, footer) — adding a fourth would break
+ *    design-system.md §15/§35.
+ *
+ * ACCESSIBILITY: the steps are an <ol>, so order is conveyed structurally
+ * rather than by the visual markers. The marker digits are therefore
+ * aria-hidden — they duplicate the list semantics for sighted users only.
+ * The sequence stays understandable with CSS or colour unavailable.
+ */
+import { Image } from 'astro:assets';
+import Container from './Container.astro';
+import { processSteps, onlineNote, processSection } from '../data/process';
+import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
+---
+
+<section class="how" id="como-funciona" aria-labelledby="how-title">
+  <Container>
+    <div class="how__header">
+      <div class="how__intro">
+        <p class="eyebrow">{processSection.eyebrow}</p>
+        <h2 class="how__title" id="how-title">{processSection.heading}</h2>
+        <p class="how__lead measure">{processSection.lead}</p>
+      </div>
+
+      {/* Supporting editorial image — used at its native ratio, uncropped,
+          natural background, no overlay. Not a card: no border, no shadow. */}
+      <figure class="how__figure">
+        <Image
+          src={roomPhoto}
+          alt={processSection.imageAlt}
+          widths={[440, 720, 1067]}
+          sizes="(min-width: 1024px) 420px, min(440px, 90vw)"
+          loading="lazy"
+          class="how__image"
+        />
+      </figure>
+    </div>
+
+    <ol class="timeline">
+      {
+        processSteps.map((step) => (
+          <li class="step" id={`passo-${step.id}`}>
+            <span class="step__marker tabular" aria-hidden="true">
+              {step.number}
+            </span>
+            <div class="step__body">
+              <h3 class="step__title">{step.title}</h3>
+              <p class="step__description">{step.description}</p>
+
+              {step.id === 'consulta-inicial' && (
+                <p class="step__note">
+                  <span class="step__note-label">{onlineNote.label}:</span>{' '}
+                  {onlineNote.text}
+                </p>
+              )}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </Container>
+</section>
+
+<style>
+  .how {
+    padding-block: var(--section-padding-block);
+    /* Back to cream after the warm-sand About block — keeps the alternation
+     * reading as rhythm rather than repetition. */
+    background-color: var(--color-bg);
+  }
+
+  .how__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    margin-block-end: var(--space-2xl);
+  }
+
+  .how__title {
+    margin-block-start: var(--space-2xs);
+    max-inline-size: 18ch;
+  }
+
+  .how__lead {
+    margin-block-start: var(--space-md);
+    color: var(--color-text-muted);
+  }
+
+  .how__figure {
+    margin: 0;
+  }
+
+  .how__image {
+    inline-size: min(440px, 90vw);
+    block-size: auto;
+    border-radius: var(--radius-lg);
+  }
+
+  /* ---- Timeline ---- */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    column-gap: var(--space-md);
+    align-items: start;
+  }
+
+  /* Vertical connector (mobile/tablet): runs from below one marker down to
+   * the next. Sits behind the markers, which have a solid fill. */
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    inset-block: 30px calc(var(--space-lg) * -1);
+    inset-inline-start: 15px; /* marker centre */
+    inline-size: 1px;
+    background-color: var(--color-border);
+  }
+
+  .step__marker {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 30px;
+    block-size: 30px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    font-family: var(--font-body);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: var(--tracking-small);
+  }
+
+  .step__title {
+    margin: 0;
+    /* One notch below the area names so this section never out-shouts
+     * Áreas de Atuação or the Hero. */
+    font-size: var(--font-size-body);
+    line-height: var(--leading-snug);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .step__description {
+    margin-block-start: var(--space-3xs);
+    color: var(--color-text);
+    max-inline-size: 46ch;
+  }
+
+  /* Online mechanics — a quiet annotation on step 02, marked by a hairline
+   * rule rather than a box, so it never reads as a separate track. */
+  .step__note {
+    margin-block-start: var(--space-sm);
+    padding-inline-start: var(--space-sm);
+    border-inline-start: 2px solid var(--color-terracotta);
+    font-size: var(--font-size-small);
+    line-height: var(--leading-normal);
+    color: var(--color-text-muted);
+    max-inline-size: 46ch;
+  }
+
+  .step__note-label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  /* ---- Desktop: horizontal timeline ---- */
+  @media (min-width: 1024px) {
+    .how__header {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      gap: var(--space-3xl);
+      align-items: center;
+    }
+
+    .how__figure {
+      justify-self: end;
+    }
+
+    .how__image {
+      inline-size: 420px;
+      max-inline-size: 100%;
+    }
+
+    .timeline {
+      position: relative;
+      flex-direction: row;
+      gap: var(--space-lg);
+    }
+
+    /* Horizontal connector spans marker centre to marker centre. */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      inset-block-start: 15px;
+      inset-inline: 15px;
+      block-size: 1px;
+      background-color: var(--color-border);
+    }
+
+    .step {
+      flex: 1;
+      grid-template-columns: 1fr;
+      grid-template-rows: 30px auto;
+      row-gap: var(--space-sm);
+      /* Flex stretches every step to the tallest one. Without this, the auto
+       * rows absorb that extra height unevenly (each step has a different
+       * text length), so the titles drift out of alignment. Pinning the
+       * marker row and starting the content keeps all four titles on one line. */
+      align-content: start;
+    }
+
+    /* The per-step vertical connector is a mobile-only device. */
+    .step:not(:last-child)::before {
+      content: none;
+    }
+
+    .step__body {
+      /* Room for the note under step 02 without stretching its siblings. */
+      align-self: start;
+    }
+  }
+
+  /* ---- Motion: same restrained reveal used elsewhere (design-system.md §31) ---- */
+  @media (prefers-reduced-motion: no-preference) {
+    .step {
+      animation: step-enter var(--duration-slow) var(--easing-standard) both;
+    }
+  }
+
+  @keyframes step-enter {
+    from {
+      opacity: 0;
+      transform: translateY(var(--distance-reveal));
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
