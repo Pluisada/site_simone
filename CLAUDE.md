@@ -383,6 +383,13 @@ Commands
 * `npm run build` — static production build to `dist/`
 * `npm run preview` — serve the production build locally
 * `npm run check` — TypeScript/Astro diagnostics (must stay at 0 errors)
+* `npm run lint` — ESLint + Stylelint
+* `npm run lint:js` — ESLint only (TypeScript/Astro + jsx-a11y rules)
+* `npm run lint:css` — Stylelint only (invalid CSS + design-token enforcement)
+
+Linting enforces the token rule automatically: any literal color outside
+`src/styles/tokens.css` fails `lint:css`. Cosmetic/formatting rules are
+deliberately disabled — see the comments in `stylelint.config.js`.
 
 Project structure
 

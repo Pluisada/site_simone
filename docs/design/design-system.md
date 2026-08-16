@@ -373,6 +373,30 @@ No third button style exists. There is no outline/bordered button variant unless
 
 ## 27. Image Treatment
 
+> **AMENDED 2026-08-15 (approved).** This section previously assumed a *single*
+> primary photographic asset. An audit of the current website established that
+> **four** legitimate real photographs exist, two of which had never been
+> published visually. The single-asset assumption is obsolete and is replaced
+> by the curated set below. The per-asset register (provenance, dimensions,
+> status) lives in `src/data/assets.ts` — the single source of truth; it is not
+> duplicated here.
+>
+> **Approved curated set:**
+> | Role | Source | Status |
+> |---|---|---|
+> | Hero — primary portrait | `photo-2025-08-20-09-41-26_orig.jpg` (734×800) → 640×800 4:5 crop | approved, in use |
+> | Quem é Simone — contextual portrait | `photo-2025-08-20-10-23-55_orig.jpg` (1280×720) → 576×720 4:5 crop | approved, in use |
+> | Como Funciona — therapy room | `img-5154_orig.jpeg` (1067×800) | recommended, not yet placed |
+> | Reception | `img-5152_orig.jpeg` (1067×800) | optional, placement undecided |
+>
+> **Rule that follows from this:** the Hero and Quem é Simone must use
+> *different* photographs. Repeating one image across both is a regression.
+>
+> **Rejected on audit:** the WhatsApp screenshot; the building exterior (its
+> signage matches the validated address, but the filename shows it came from a
+> third-party real-estate listing, so ownership cannot be established); and the
+> current logo JPEG as a design asset.
+
 - **Primary crop:** ≈4:5, portrait orientation — hero, credentials block, Sobre page
 - **Secondary crop:** 1:1 — reserved for space-constrained future placements; not currently used anywhere in this spec
 - **Radius:** `radius.lg` on every image container

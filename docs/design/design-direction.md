@@ -99,6 +99,15 @@ Fonts are recommended for evaluation in the Design System phase — **nothing is
 
 **RECOMMENDATION — the existing portrait is the primary and, for now, only usable photographic asset**, per [[content-positioning-brief]] §7/§10 (CLIENT VALIDATION I2: reuse existing photos). Analysis, from the captured screenshots (§1):
 
+> **SUPERSEDED 2026-08-15 (approved).** The "only usable asset" claim above was
+> based on the screenshots available at the time. A later audit of the current
+> website found **four** legitimate real photographs — two portraits plus two
+> consultório interiors that had never been published visually. The approved
+> curated set and its per-role assignment are recorded in [[design-system]] §27
+> and `src/data/assets.ts`. The treatment guidance in the rest of this section
+> (natural background, no overlay, consistent crop, no stock) still stands and
+> now applies to every asset in that set.
+
 - **Hero image treatment — RECOMMENDATION:** the existing portrait (warm, natural office backdrop, soft smile) should anchor the hero as a *meaningful supporting element*, not a full-bleed background nor a small afterthought thumbnail — see the recommended hero direction in §9(C). Remove the current thin gray box-frame; treat the photo with a soft, moderate-radius crop (consistent with §7's radius philosophy) instead.
 - **Portrait treatment — RECOMMENDATION:** keep the natural, softly blurred office background as-is (real, not synthetic) — do not add color overlays, duotones, or gradient washes on top of the photo, which is exactly the current site's dated pattern (§1).
 - **Crop behavior — RECOMMENDATION:** a consistent crop logic across every appearance of the portrait — e.g., a taller portrait-oriented crop (roughly 4:5) for the hero and "Quem é Simone," a tighter square crop only where space is constrained (e.g., a small credential-adjacent thumbnail, if ever needed). Avoid re-cropping inconsistently per placement, which fragments the sense of a single coherent photograph across the site.
@@ -452,7 +461,7 @@ Preliminary tokens/concepts only — **no code, no values committed as final.**
 - **Hero direction:** Direction C, Hybrid portrait + positioning (§9) — an asymmetric composition giving equal visual weight to the positioning message and the real portrait, avoiding both a photo-dominant "headshot site" and a photo-light "editorial only" hero.
 - **Color strategy:** evolve, don't replace, the existing logo's warm-coral + deep-teal instinct — deep desaturated teal as primary, muted terracotta as a single restrained accent, warm neutral backgrounds replacing the current gradient washes, one dedicated CTA color, full WCAG AA contrast throughout (§4).
 - **Typography strategy:** a serif (e.g., Fraunces) + sans (e.g., Inter/Work Sans) pairing — warm, editorial headlines over clean, highly legible body/UI type — deliberately differentiated from both benchmarks' sans-only systems (§5).
-- **Photography strategy:** the existing portrait as the sole, consistently-cropped hero and trust-building image, treated with soft framing and no color overlays; the stray real-estate photo and the WhatsApp screenshot-as-content both retired (§6).
+- **Photography strategy:** a small curated set of real photographs from the current site, each with one assigned role — a front-facing portrait for the Hero, a different contextual portrait for Quem é Simone, and the consultório interiors held for Como Funciona — all treated with soft framing, natural backgrounds and no colour overlays; the building exterior and the WhatsApp screenshot-as-content both retired. See [[design-system]] §27 (amended) and `src/data/assets.ts`.
 - **Layout philosophy:** asymmetric, editorial, generously spaced — a ~1200px max content width, sparing card usage, one consistent moderate border-radius, whitespace treated as a trust signal (§7).
 - **Component philosophy:** one CTA style used everywhere it appears; editorial blocks (not a uniform grid) for Áreas de Atuação, with oratória visually distinguished; a numbered timeline (not cards) for Como Funciona; an honest, small badge (not a section) for Google Reviews; an accessible accordion for FAQ (§10–§15, §20).
 - **Motion philosophy:** subtle, optional, purposeful only — short reveal-on-scroll, simple hover feedback, an accessible accordion transition, and nothing else; full respect for reduced-motion preferences (§17).
