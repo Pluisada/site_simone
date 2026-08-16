@@ -1,0 +1,35 @@
+/**
+ * Self-hosted webfonts — Landpage Simone
+ *
+ * Per docs/architecture/technical-architecture.md §7:
+ *  - self-hosted (no Google Fonts CDN at runtime) for performance, LGPD/privacy
+ *    and cache-control reasons
+ *  - Latin subset only (U+0000–00FF covers all Portuguese diacritics)
+ *  - variable fonts: one file per family covers the 400–600 range the
+ *    Design System actually uses (weight 700 is reserved but unused)
+ *  - font-display: swap — text must never be invisible while a font loads
+ *
+ * The `url()` paths are resolved and fingerprinted by Vite at build time
+ * because this stylesheet is imported from a component/layout, not linked
+ * from public/.
+ */
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 300 700; /* variable range; only 400–600 are used in the system */
+  font-display: swap;
+  src: url('../assets/fonts/fraunces-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300 700; /* variable range; only 400–600 are used in the system */
+  font-display: swap;
+  src: url('../assets/fonts/inter-latin-var.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}

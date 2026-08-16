@@ -1,0 +1,7 @@
+# Landpage Simone
+# Replaces the Weebly platform default on the current site.
+# Sitemap reference is added in Phase 2, once the production domain is
+# confirmed (open client-validation item — technical-architecture.md §8).
+
+User-agent: *
+Allow: /

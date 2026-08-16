@@ -1,0 +1,41 @@
+---
+/**
+ * Container — horizontal width constraint and gutters.
+ * design-system.md §10: max 1200px, 20px mobile / 32px desktop gutter.
+ *
+ * `width="text"` constrains to the 640px reading measure instead, for
+ * body-copy blocks (FAQ answers, area descriptions).
+ */
+interface Props {
+  width?: 'default' | 'text';
+  as?: string;
+  class?: string;
+}
+
+const {
+  width = 'default',
+  as: Tag = 'div',
+  class: className,
+}: Props = Astro.props;
+---
+
+<Tag class:list={['container', `container--${width}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: var(--container-padding);
+  }
+
+  .container--default {
+    max-width: var(--container-max);
+  }
+
+  /* Measure cap plus gutters, so text blocks stay readable at any viewport. */
+  .container--text {
+    max-width: calc(var(--container-text) + (var(--container-padding) * 2));
+  }
+</style>

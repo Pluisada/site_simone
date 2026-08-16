@@ -1,0 +1,163 @@
+---
+/**
+ * Header — sticky slim header shell.
+ * design-system.md §17 (header) and §18 (navigation).
+ *
+ * PHASE 1 SCOPE: structure, sticky behavior, desktop nav, header CTA.
+ * NOT YET IMPLEMENTED (Phase 2): the mobile hamburger toggle and its panel.
+ * Per design-system.md §18 the mobile panel must cover only the upper portion
+ * of the viewport so the persistent bottom CTA bar stays reachable, and it
+ * must NOT duplicate the CTA inside the panel.
+ *
+ * HARD RULES:
+ *  - No announcement bar component exists in this system (design-system.md §17).
+ *  - Solid cream background — no transparency, no backdrop blur.
+ *  - Header does not hide on scroll; it only gains a border once scrolled.
+ */
+import Container from './Container.astro';
+import Button from './Button.astro';
+import { site, navItems } from '../data/site';
+---
+
+<header class="header" data-header>
+  <Container class="header__inner">
+    <a class="header__brand" href="/">
+      <span class="header__name">{site.name}</span>
+      <span class="header__role">{site.role}</span>
+    </a>
+
+    <nav class="header__nav" aria-label="Navegação principal">
+      <ul class="header__list">
+        {
+          navItems.map((item) => (
+            <li>
+              <a class="header__link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header__cta">
+      {/* Final CTA label is Phase 2 copy — placeholder is intentional. */}
+      <Button whatsapp ariaLabel={`Conversar no WhatsApp com ${site.name}`}>
+        [CTA_LABEL]
+      </Button>
+    </div>
+  </Container>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--duration-fast) var(--easing-standard);
+  }
+
+  /* Scrolled "settled" state — set by the inline script below. */
+  .header[data-scrolled='true'] {
+    border-bottom-color: var(--color-border);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .header :global(.header__inner) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    min-height: 60px; /* mobile — design-system.md §17 */
+  }
+
+  .header__brand {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--color-primary);
+  }
+
+  .header__name {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.15;
+  }
+
+  .header__role {
+    font-family: var(--font-body);
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Desktop nav and header CTA are hidden below 1024px.
+   * On mobile the CTA lives in the bottom bar (design-system.md §18, §26)
+   * and navigation moves into the hamburger panel (Phase 2). */
+  .header__nav,
+  .header__cta {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .header :global(.header__inner) {
+      min-height: 72px; /* desktop — design-system.md §17 */
+    }
+
+    .header__nav,
+    .header__cta {
+      display: block;
+    }
+
+    .header__list {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .header__link {
+      display: inline-block;
+      padding-block: var(--space-2xs);
+      font-size: var(--font-size-nav);
+      line-height: var(--leading-nav);
+      font-weight: var(--font-weight-medium);
+      letter-spacing: var(--tracking-nav);
+      color: var(--color-text);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+    }
+
+    .header__link:hover {
+      color: var(--color-link-hover);
+    }
+
+    /* Current-page state — the one approved functional use of terracotta
+     * as a state indicator (design-system.md §16). Never a background pill. */
+    .header__link[aria-current='page'] {
+      font-weight: var(--font-weight-semibold);
+      border-bottom-color: var(--color-terracotta);
+    }
+  }
+</style>
+
+<script>
+  // Minimal, dependency-free: toggles the header's scrolled state.
+  // Passive listener so scrolling is never blocked.
+  const header = document.querySelector<HTMLElement>('[data-header]');
+
+  if (header) {
+    const update = () => {
+      header.dataset.scrolled = window.scrollY > 40 ? 'true' : 'false';
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+  }
+</script>

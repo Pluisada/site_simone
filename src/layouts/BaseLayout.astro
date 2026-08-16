@@ -1,0 +1,65 @@
+---
+/**
+ * BaseLayout — the shared document shell for every page.
+ *
+ * Responsibilities:
+ *  - html lang / head wiring (via SEO.astro)
+ *  - global stylesheet + font-face imports
+ *  - font preloads with Vite-resolved (fingerprinted) URLs
+ *  - skip link, header, <main> landmark
+ *
+ * PHASE 1 SCOPE: Footer and the mobile CTA bar are NOT included yet —
+ * they are Phase 2 deliverables (design-system.md §25, §26).
+ */
+import SEO from '../components/SEO.astro';
+import Header from '../components/Header.astro';
+import { site } from '../data/site';
+
+// Importing the font files lets Vite emit fingerprinted URLs we can preload.
+import interFontUrl from '../assets/fonts/inter-latin-var.woff2';
+import frauncesFontUrl from '../assets/fonts/fraunces-latin-var.woff2';
+
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  path?: string;
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const { title, description, path, ogImage, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <SEO
+      title={title}
+      description={description}
+      path={path}
+      ogImage={ogImage}
+      noindex={noindex}
+    />
+
+    {/* Above-the-fold faces: Inter for body copy, Fraunces for the H1.
+        technical-architecture.md §7 */}
+    <link rel="preload" href={interFontUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={frauncesFontUrl} as="font" type="font/woff2" crossorigin />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    {/* Footer and MobileCTABar: Phase 2 */}
+  </body>
+</html>

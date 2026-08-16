@@ -1,0 +1,199 @@
+/**
+ * Global base styles — Landpage Simone
+ *
+ * Reset + base element styling only. Component-specific styling lives in each
+ * component's scoped <style> block (Astro scopes these automatically — see
+ * docs/architecture/technical-architecture.md §3).
+ *
+ * Every value below references a token from tokens.css. No raw hex colors,
+ * font sizes or spacing values may be introduced here (design-system.md §35).
+ */
+
+/* ---------------------------------------------------------------
+ * RESET
+ * ------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /* Offset for the future sticky header so anchor links don't hide content */
+  scroll-padding-top: var(--space-2xl);
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--font-size-body);
+  line-height: var(--leading-body);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--tracking-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------------------------------------------------------------
+ * TYPOGRAPHY — design-system.md §6
+ * ------------------------------------------------------------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-heading);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: var(--tracking-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--tracking-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--leading-h3);
+  letter-spacing: var(--tracking-h3);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------
+ * LINKS — design-system.md §16
+ * Inline body links keep a persistent underline so affordance never
+ * relies on color alone.
+ * ------------------------------------------------------------- */
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary-light);
+  text-underline-offset: 0.15em;
+  transition: color var(--duration-fast) var(--easing-standard);
+}
+
+a:hover {
+  color: var(--color-link-hover);
+  text-decoration-color: currentColor;
+}
+
+/* ---------------------------------------------------------------
+ * FOCUS — design-system.md §29
+ * :focus-visible only (keyboard/AT focus, not mouse-click noise).
+ * Never remove without a replacement.
+ * ------------------------------------------------------------- */
+:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* ---------------------------------------------------------------
+ * SKIP LINK — design-system.md §30 / accessibility foundation
+ * ------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  z-index: 100;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.skip-link:focus {
+  left: var(--space-sm);
+  top: var(--space-sm);
+}
+
+/* ---------------------------------------------------------------
+ * UTILITIES
+ * ------------------------------------------------------------- */
+
+/* Visually hidden but available to screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Eyebrow / field label — design-system.md §6 */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--font-size-eyebrow);
+  line-height: var(--leading-eyebrow);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Body-copy measure cap — design-system.md §10 */
+.measure {
+  max-width: var(--container-text);
+}
+
+/* Tabular figures for credential numbers and timeline markers
+ * — design-system.md §5, §6 */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------
+ * MOTION — design-system.md §31, §30
+ * All motion is opt-in behind prefers-reduced-motion: no-preference.
+ * This global guard is the safety net; components must not animate outside it.
+ * ------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

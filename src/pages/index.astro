@@ -1,0 +1,60 @@
+---
+/**
+ * Homepage — PHASE 1 FOUNDATION ONLY.
+ *
+ * The real homepage sections (Hero, Áreas de Atuação, Quem é Simone,
+ * Como Funciona, Avaliações, FAQ, CTA/Contato) are Phase 2+ deliverables and
+ * are deliberately NOT implemented here.
+ *
+ * What this page currently does:
+ *  - exercises BaseLayout / Header / Section / Container / Button
+ *  - verifies the astro:assets image pipeline against the real portrait
+ * It is scaffolding, not design work, and will be replaced in Phase 2.
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Container from '../components/Container.astro';
+import portrait from '../assets/images/simone-portrait-source.jpg';
+---
+
+<BaseLayout>
+  <Section>
+    <Container>
+      <p class="eyebrow">Fase 1 — Fundação técnica</p>
+      <h1>[POSITIONING_HEADLINE]</h1>
+      <p class="measure intro">
+        Scaffold do projeto e design system implementados. As seções da homepage
+        serão construídas na Fase 2.
+      </p>
+
+      {/*
+        Image pipeline verification against the real portrait asset.
+        NOT the hero. The approved 4:5 crop and eager/fetchpriority="high"
+        loading are applied when the Hero is built (design-system.md §19, §27).
+      */}
+      <Image
+        src={portrait}
+        alt="Simone Tavolaro, fonoaudióloga, em seu consultório"
+        widths={[320, 640]}
+        sizes="(min-width: 1024px) 320px, 60vw"
+        loading="lazy"
+        class="portrait-check"
+      />
+    </Container>
+  </Section>
+</BaseLayout>
+
+<style>
+  .intro {
+    margin-top: var(--space-sm);
+    color: var(--color-text-muted);
+  }
+
+  .portrait-check {
+    margin-top: var(--space-lg);
+    width: 240px;
+    height: auto;
+    border-radius: var(--radius-lg);
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+/**
+ * Section — vertical rhythm and alternating background surfaces.
+ * design-system.md §9 (section padding) and §4 (cream / warm-sand alternation).
+ *
+ * `background` is limited to the three approved surface tokens. There is
+ * deliberately no gradient option — gradients are permanently retired
+ * (design-system.md §33).
+ */
+interface Props {
+  id?: string;
+  background?: 'cream' | 'sand' | 'white';
+  labelledby?: string;
+  class?: string;
+}
+
+const { id, background = 'cream', labelledby, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  class:list={['section', `section--${background}`, className]}
+>
+  <slot />
+</section>
+
+<style>
+  .section {
+    padding-block: var(--section-padding-block);
+  }
+
+  .section--cream {
+    background-color: var(--color-bg);
+  }
+
+  .section--sand {
+    background-color: var(--color-bg-alt);
+  }
+
+  .section--white {
+    background-color: var(--color-surface);
+  }
+</style>

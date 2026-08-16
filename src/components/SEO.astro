@@ -1,0 +1,66 @@
+---
+/**
+ * SEO — reusable head mechanism.
+ * technical-architecture.md §8.
+ *
+ * Provides: title, description, canonical, Open Graph, Twitter card,
+ * language and viewport wiring. Structured data is NOT emitted here —
+ * JSON-LD is deferred to Phase 2+ and must be built from validated data only
+ * (never fabricated; aggregateRating/review are explicitly forbidden).
+ *
+ * Metadata VALUES are still placeholders — final copy is a Phase 2 deliverable.
+ */
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Absolute or root-relative path for the canonical URL. */
+  path?: string;
+  /** Open Graph image URL. Defaults to none until a validated asset is chosen. */
+  ogImage?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = site.defaultTitle,
+  description = site.defaultDescription,
+  path = Astro.url.pathname,
+  ogImage,
+  noindex = false,
+} = Astro.props;
+
+// Astro.site comes from the `site` field in astro.config.mjs (SITE_URL env var).
+const canonicalUrl = Astro.site ? new URL(path, Astro.site).href : path;
+const ogImageUrl = ogImage && Astro.site ? new URL(ogImage, Astro.site).href : ogImage;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+{/* Theme color uses the primary teal token value (design-system.md §4). */}
+<meta name="theme-color" content="#1F3E3B" />
+
+{/* Open Graph */}
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+
+{/* Twitter/X */}
+<meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
+
+{/* Font preloads are emitted by BaseLayout, which imports the font assets so
+    Vite can resolve their fingerprinted URLs (a hardcoded path would break). */}
