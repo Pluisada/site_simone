@@ -9,12 +9,13 @@ Purpose: Complete redesign of the website/landing page for speech-language patho
 Current website:
 http://www.fono-simonetavolaro.com/
 
-Primary benchmark:
+Primary benchmarks are:
 https://www.pac.fonosimoneebel.com.br/
+https://tinyeye.com
 
-The Simone Ebel website is a benchmark for UX, information architecture, user journey and conversion structure only.
+Both websites are a benchmark for UX, information architecture, user journey and conversion structure only.
 
-It is NOT a source of content.
+They are NOT a source of content.
 
 Do not copy its:
 
@@ -32,17 +33,19 @@ Current Project Phase
 
 The project is currently in:
 
-DISCOVERY
+IMPLEMENTATION — PHASE 1 COMPLETE (technical foundation + design system)
 
-Do not implement the final website until the Discovery phase has been completed and reviewed.
+Completed and approved: Discovery · UX Strategy · Client Validation · Content & Positioning · Design Direction · Design System · Technical Architecture.
+
+Phase 2 (homepage sections) requires explicit approval before it begins.
 
 Current workflow:
 
-DISCOVERY
-→ UX STRATEGY
-→ INFORMATION ARCHITECTURE
-→ DESIGN SYSTEM
-→ IMPLEMENTATION
+DISCOVERY ✅
+→ UX STRATEGY ✅
+→ INFORMATION ARCHITECTURE ✅
+→ DESIGN SYSTEM ✅
+→ IMPLEMENTATION ◀ current (Phase 1 done)
 → VISUAL QA
 → SEO/GEO
 → PERFORMANCE
@@ -356,3 +359,59 @@ The Discovery phase must end with:
 docs/discovery/discovery-summary.md
 
 Only after Discovery has been reviewed should implementation begin.
+
+⸻
+
+Technical Implementation
+
+Added at the end of IMPLEMENTATION Phase 1. Everything below describes the actual, built project — it does not replace any of the phase documentation above.
+
+Stack (approved — see docs/architecture/technical-architecture.md)
+
+* Framework: Astro 7 (`output: 'static'`) — no SSR, no adapter
+* Styling: native CSS with custom properties; Astro's per-component scoped styles
+* Component library: none
+* Animation: CSS + minimal vanilla JS
+* Images: `astro:assets` (build-time, Sharp)
+* Fonts: self-hosted Fraunces + Inter (variable, Latin subset)
+* Deployment target: Cloudflare Pages (nothing deployed yet)
+* Analytics: none
+
+Commands
+
+* `npm run dev` — dev server
+* `npm run build` — static production build to `dist/`
+* `npm run preview` — serve the production build locally
+* `npm run check` — TypeScript/Astro diagnostics (must stay at 0 errors)
+
+Project structure
+
+```
+src/
+├── assets/     fonts + source images (processed by astro:assets)
+├── components/ Container, Section, Button, Header, SEO
+├── data/       site.ts, practice-areas.ts, faq.ts — validated content only
+├── layouts/    BaseLayout.astro
+├── lib/        (empty — reserved for JSON-LD builders in Phase 2)
+├── pages/      index.astro (Phase 1 foundation page)
+└── styles/     tokens.css, fonts.css, global.css
+public/         robots.txt
+```
+
+Implementation constraints
+
+* `src/styles/tokens.css` is the single source of design values. Never hardcode a hex color, font size, spacing value, radius or duration in a component — always use a token.
+* Do not add a token, color, font or component pattern that is not already in docs/design/design-system.md. Propose it there first.
+* No pill/full border-radius. No box-shadow on buttons. No gradients. No announcement bar. No desktop floating chat bubble.
+* The WhatsApp number lives only in `src/data/site.ts`. Never duplicate it in a component.
+* The primary CTA must look identical at every placement.
+* Áreas de Atuação are editorial blocks, never a uniform card grid. Afasia gets the same visual weight as the other five areas.
+* Practice-area descriptions in `src/data/practice-areas.ts` are the client's own clinical wording — do not reword them without her re-validation.
+* Never invent business data. Unvalidated fields are `null` with a TODO; do not replace them with plausible-looking placeholders.
+* FAQ must use native `<details name="faq">` — no accordion library.
+* All motion sits behind `prefers-reduced-motion: no-preference`.
+* Excluded image assets: the real-estate photo and the WhatsApp business-card screenshot from the old site.
+
+Phase 2 scope (needs approval)
+
+Hero, Áreas de Atuação, Quem é Simone, Como Funciona, Avaliações, FAQ UI, CTA/Contato, Footer, mobile CTA bar, mobile navigation, JSON-LD structured data, sitemap.
