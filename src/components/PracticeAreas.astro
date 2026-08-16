@@ -75,9 +75,6 @@ const groups = (Object.keys(practiceAreaGroups) as PracticeAreaGroupKey[]).map((
                 </div>
                 <div class="area__body">
                   <p class="area__description">{area.description}</p>
-                  {area.id === 'oratoria' && (
-                    <p class="area__note">{serviceScope.oratoriaFormat}</p>
-                  )}
                 </div>
               </li>
             ))}
@@ -165,13 +162,6 @@ const groups = (Object.keys(practiceAreaGroups) as PracticeAreaGroupKey[]).map((
   .area__description {
     color: var(--color-text);
     max-inline-size: 62ch;
-  }
-
-  .area__note {
-    margin-block-start: var(--space-2xs);
-    font-size: var(--font-size-small);
-    line-height: var(--leading-small);
-    color: var(--color-text-muted);
   }
 
   .areas__scope {

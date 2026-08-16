@@ -5,12 +5,16 @@
  * client-validated facts. No claim, statistic, superlative or comparative
  * statement appears here, per the healthcare-communication rules.
  *
- * STATUS: this is validated-fact copy, not approved final marketing copy.
- * content-positioning-brief.md §6 defines what the hero must COMMUNICATE
- * (message / content / copy direction) and explicitly defers polished
- * wording. These strings are the minimum faithful expression of that brief
- * and remain subject to client copy approval.
+ * CONTENT UPDATE 2026-08-16 (client-approved, source: TEXTOS DA LANDING
+ * PAGE.docx — tracked changes approved by the client). This supersedes the
+ * earlier "validated-fact draft" status noted below: headline, supporting
+ * message and credibility lines are now the client's own approved wording,
+ * reproduced verbatim (wording, capitalization, punctuation, terminology).
+ *
+ * NAME UPDATE 2026-08-16: portraitAlt reads `site.name` instead of
+ * repeating the professional name as a separate literal.
  */
+import { site } from './site';
 
 export const hero = {
   /**
@@ -19,21 +23,24 @@ export const hero = {
    * em educação"; corroborated by the CFFa registration n. 9940/24
    * (Especialista em Linguagem) on the current site.
    * This states a registered credential — it is not a superiority claim.
+   * CLIENT-APPROVED 2026-08-16 wording/capitalization.
    */
-  headline: 'Fonoaudióloga especialista em linguagem',
+  headline: 'Fonoaudióloga Especialista em Linguagem',
 
   /**
    * Supporting message — the validated scope of practice in plain language.
-   * Source: client-validation A1 (current focus areas), C1/C2 (area
-   * descriptions), A2 (audiences). Area names match src/data/practice-areas.ts.
+   * CLIENT-APPROVED 2026-08-16 verbatim, including its punctuation (the
+   * space before the comma after "taquifemia)" is reproduced exactly as
+   * approved, not corrected).
    */
   supportingMessage:
-    'Atendimento em atraso de linguagem, trocas na fala, distúrbios da fluência, motricidade orofacial, oratória e reabilitação de linguagem.',
+    'Atendimento em Atraso de linguagem, “trocas na fala”, distúrbios da fluência (gagueira, taquifemia) , motricidade orofacial, oratória, afasia.',
 
   /**
    * Audience cue — compressed life-stage tags shown above the headline.
    * Source: content-positioning-brief.md §6, which specifies exactly
    * "Crianças e adolescentes" / "Adultos" (from client-validation A2, B1, D1).
+   * Unchanged by the 2026-08-16 content update.
    *
    * Deliberately kept short: the 2y6m minimum age (B1) is an eligibility
    * detail that belongs to Áreas de Atuação and the FAQ, not the hero cue.
@@ -42,12 +49,16 @@ export const hero = {
   audienceCue: ['Crianças e adolescentes', 'Adultos'],
 
   /**
-   * Lightweight credibility cue. The FULL credential list belongs to the
-   * "Quem é Simone" section, not the hero (design-system.md §21, ux-strategy §13).
+   * Credibility cue — CLIENT-APPROVED 2026-08-16 as three separate lines
+   * (previously a single combined sentence). Rendered as three lines inside
+   * the same styled block in Hero.astro — no layout/typography change.
    * Source: client-validation F1 + registration numbers on the current site.
    */
-  credibilityCue:
-    'Especialista em Linguagem e em Fonoaudiologia Educacional pelo Conselho Federal de Fonoaudiologia. Graduada pela PUC-SP.',
+  credibilityCue: [
+    'Especialista em Linguagem pelo Conselho Federal de Fonoaudiologia',
+    'Especialista de Fonoaudiologia Educacional pelo Conselho Federal de Fonoaudiologia',
+    'Graduada em Fonoaudiologia pela Pontifícia Universidade Católica – PUC - SP',
+  ],
 
   /**
    * CTA label. WhatsApp is the sole primary channel (client-validation E2).
@@ -58,7 +69,8 @@ export const hero = {
 
   /**
    * Portrait alt text — descriptive and role-based, replacing the current
-   * site's generic "Picture"/"Imagem" (design-system.md §27).
+   * site's generic "Picture"/"Imagem" (design-system.md §27). Unchanged by
+   * the 2026-08-16 content update.
    */
-  portraitAlt: 'Simone Tavolaro, fonoaudióloga, em seu consultório',
+  portraitAlt: `${site.name}, fonoaudióloga, em seu consultório`,
 } as const;

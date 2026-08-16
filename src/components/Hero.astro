@@ -44,7 +44,14 @@ import portrait from '../assets/images/hero-portrait-4x5.jpg';
       <p class="hero__support measure">{hero.supportingMessage}</p>
 
       <p class="hero__credibility">
-        {hero.credibilityCue}
+        {
+          hero.credibilityCue.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))
+        }
       </p>
 
       <div class="hero__cta">

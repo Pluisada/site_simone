@@ -1,11 +1,14 @@
 /**
  * Áreas de Atuação — six validated practice areas, in two editorial groups.
  *
- * Every `description` below is the client's OWN plain-language wording,
- * verbatim from docs/discovery/client-validation.md (C1) and the final
- * validation round (content-positioning-brief.md, UPDATE section).
- * These are clinical descriptions authored by the practitioner — they must
- * not be reworded, shortened or "improved" without her re-validation.
+ * Every `description` below is the client's OWN clinical wording.
+ * CONTENT UPDATE 2026-08-16 (client-approved, source: TEXTOS DA LANDING
+ * PAGE.docx — tracked changes approved by the client): all six descriptions
+ * were replaced with new client-authored wording, reproduced verbatim. The
+ * previous short plain-language paragraphs (client-validation C1) were
+ * explicitly removed per the approved revision. These are clinical
+ * descriptions authored by the practitioner — they must not be reworded,
+ * shortened or "improved" without her re-validation.
  *
  * GROUPING (client-approved 2026-08-16, design-system.md §20 amended):
  * two editorial groups distinguish two different visitor needs — NOT a
@@ -51,23 +54,28 @@ export const practiceAreas: PracticeArea[] = [
     id: 'atraso-de-linguagem',
     name: 'Atraso de linguagem',
     description:
-      'Atraso de linguagem é quando uma criança demora mais que o esperado para começar a falar ou para formar frases; ela pode entender bem, mas falar menos palavras que outras da mesma idade.',
-    audience: 'Crianças e adolescentes',
+      'A fonoaudióloga busca compreender como a criança está se comunicando, identificando suas habilidades e dificuldades de linguagem. A partir dessa avaliação são definidas estratégias terapêuticas individualizadas para favorecer o desenvolvimento da compreensão, da expressão e do uso funcional da linguagem, além de orientações à família e, quando necessário, encaminhamentos para outros profissionais.',
+    audience: 'Crianças',
     group: 'language-development',
   },
   {
     id: 'trocas-na-fala',
     name: 'Trocas na fala',
     description:
-      'Quando a pessoa confunde ou substitui sons, sílabas ou palavras ao falar, fazendo com que a frase saia diferente do que ela queria dizer.',
-    audience: 'Crianças e adolescentes',
+      'Quando a criança apresenta trocas, omissões, substituições ou distorções de sons, sua fala pode se tornar menos clara e compreensível. A fonoaudióloga realiza uma avaliação para identificar quais sons estão alterados, considerando a idade e o desenvolvimento da criança, além dos contextos em que essas alterações ocorrem. A partir dessa avaliação, são definidas estratégias terapêuticas individualizadas para favorecer o desenvolvimento e a produção adequada dos sons da fala.',
+    audience: 'Crianças',
     group: 'language-development',
   },
   {
     id: 'disturbios-da-fluencia',
-    name: 'Distúrbios da fluência',
+    // CLIENT-APPROVED 2026-08-16 display name. The approved document gives
+    // this as "Fluência da Fala (Gagueira e Taquifemia) – Crianças,
+    // adolescentes e adultos" in one line; the audience clause is carried
+    // in the `audience` field below (already rendered separately by
+    // PracticeAreas.astro) rather than duplicated inside `name`.
+    name: 'Fluência da Fala (Gagueira e Taquifemia)',
     description:
-      'Gagueira é quando a pessoa repete sons, alonga sílabas ou trava ao falar, o que atrapalha o ritmo da fala e pode causar frustração.',
+      'A fonoaudióloga busca compreender como a pessoa se comunica, identificando as características da sua fala e possíveis alterações de fluência, como a gagueira e a taquifemia. A partir dessa avaliação, são definidas estratégias terapêuticas individualizadas, considerando a idade, as necessidades e os objetivos de cada paciente, com o propósito de favorecer uma comunicação mais confortável, espontânea e funcional.',
     audience: 'Crianças, adolescentes e adultos',
     group: 'language-development',
   },
@@ -75,7 +83,7 @@ export const practiceAreas: PracticeArea[] = [
     id: 'motricidade-orofacial',
     name: 'Motricidade orofacial',
     description:
-      'Motricidade orofacial é o conjunto de movimentos que fazemos com a boca e o rosto para funções importantes do dia a dia, como mastigar, engolir, respirar, falar e até expressar emoções. Quando essa motricidade não está funcionando bem, podemos ter dificuldades nessas atividades, e a terapia ajuda a fortalecer e coordenar esses músculos.',
+      'A fonoaudióloga avalia o funcionamento das estruturas e das funções orofaciais, como respiração, mastigação, deglutição, fala e postura e mobilidade da língua e dos lábios. A partir dessa avaliação, são identificadas possíveis alterações miofuncionais, como interposição lingual e alterações na articulação da fala, e definidas estratégias terapêuticas individualizadas para promover um funcionamento mais adequado e integrado das funções orofaciais. Quando necessário, o trabalho é realizado de forma interdisciplinar, em parceria com dentistas e outros profissionais.',
     audience: 'Crianças, adolescentes e adultos',
     group: 'language-development',
   },
@@ -83,7 +91,7 @@ export const practiceAreas: PracticeArea[] = [
     id: 'oratoria',
     name: 'Oratória',
     description:
-      'Oratória é a habilidade de falar em público de forma clara e organizada para explicar ideias, contar histórias ou convencer quem escuta.',
+      'Aprimoramento da comunicação oral para profissionais que desejam se expressar com mais clareza, segurança e assertividade. A avaliação fonoaudiológica considera aspectos da fala, voz e comunicação, trabalhando recursos como articulação, ritmo, entonação, expressividade, organização do discurso e postura comunicativa, de acordo com as demandas e objetivos profissionais de cada paciente.',
     audience: 'Adultos',
     group: 'professional-communication',
   },
@@ -91,7 +99,7 @@ export const practiceAreas: PracticeArea[] = [
     id: 'afasia',
     name: 'Afasia e reabilitação de linguagem',
     description:
-      'Afasia compreensão e expressão é quando alguém tem dificuldade para entender o que os outros dizem ou para encontrar as palavras e falar, geralmente por causa de uma lesão no cérebro.',
+      'Alteração da linguagem que pode ocorrer após um AVC ou outras condições neurológicas, afetando a capacidade de falar, compreender, ler e/ou escrever. A fonoaudióloga realiza uma avaliação para compreender as habilidades de comunicação preservadas e as dificuldades apresentadas, definindo estratégias terapêuticas individualizadas para favorecer a comunicação funcional e a participação do paciente em seu cotidiano, além de orientar familiares e, quando necessário, atuar em conjunto com outros profissionais.',
     audience: 'Adultos',
     group: 'language-development',
   },
@@ -101,10 +109,13 @@ export const practiceAreas: PracticeArea[] = [
  * Service scope notes — client-validated, used as eligibility copy.
  * B1: children from 2y6m; parental guidance below that age.
  * D1: online sessions for adults and adolescents only.
+ *
+ * `oratoriaFormat` ("Atendimento individual, em consultório e/ou on-line")
+ * was removed 2026-08-16 (client-approved, TEXTOS DA LANDING PAGE.docx) —
+ * the approved revision drops the note that used to render under Oratória.
  */
 export const serviceScope = {
   minimumChildAge: 'A partir de 2 anos e 6 meses',
   underMinimumAgeNote: 'Antes dessa idade: orientação parental',
   onlineEligibility: 'Atendimento on-line disponível para adultos e adolescentes',
-  oratoriaFormat: 'Atendimento individual, em consultório e/ou on-line',
 } as const;

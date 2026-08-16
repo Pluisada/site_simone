@@ -14,7 +14,13 @@
 export const SITE_URL = import.meta.env.SITE ?? 'https://example.invalid';
 
 export const site = {
-  name: 'Simone Tavolaro',
+  /**
+   * Full professional name — CLIENT-APPROVED 2026-08-16 (name + header
+   * registration update). This is the single source of truth for the name;
+   * every other file that needs it imports `site.name` rather than
+   * repeating the literal string. Previously "Simone Tavolaro".
+   */
+  name: 'Simone Tavolaro Luisada',
   role: 'Fonoaudióloga',
   locale: 'pt-BR',
   /**
@@ -25,10 +31,24 @@ export const site = {
    * description specifically; it is deliberately worded differently from
    * the Hero's on-page headline/support copy (src/data/hero.ts), which
    * serves a different purpose and remains its own source of truth.
+   *
+   * CONTENT UPDATE 2026-08-16 (client-approved, source: TEXTOS DA LANDING
+   * PAGE.docx): the "- CRFa: 9029-2" suffix was removed from the title
+   * string itself and moved to the standalone `crfa` field below.
+   *
+   * NAME UPDATE 2026-08-16: name in the title string updated to
+   * "Simone Tavolaro Luisada" for consistency with `name` above.
    */
-  defaultTitle: 'Simone Tavolaro | Fonoaudióloga em Alphaville, Barueri',
+  defaultTitle: 'Simone Tavolaro Luisada | Fonoaudióloga em Alphaville, Barueri',
   defaultDescription:
     'Atendimento fonoaudiológico particular e on-line em Alphaville, Barueri, para crianças, adolescentes e adultos: linguagem, fala, fluência e oratória.',
+  /**
+   * CLIENT-APPROVED 2026-08-16 (TEXTOS DA LANDING PAGE.docx). General CRFa
+   * registration number — distinct from the specialist-title registrations
+   * in `credentials.cffaSpecializations`. Rendered in the Header brand block
+   * below the role (name + header registration update, 2026-08-16).
+   */
+  crfa: '9029-2',
 } as const;
 
 /**

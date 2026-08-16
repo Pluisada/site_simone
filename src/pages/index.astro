@@ -14,9 +14,11 @@
  * AboutCredentials stays as a lighter secondary echo — see that component's
  * own comment.
  *
- * Page metadata below (title/description) is CLIENT-APPROVED 2026-08-16 —
- * see src/data/site.ts (defaultTitle/defaultDescription) for the same
- * approved values, the source of truth for future pages.
+ * Page metadata (title/description) is CLIENT-APPROVED 2026-08-16 and comes
+ * from SEO.astro's defaults (site.defaultTitle/defaultDescription in
+ * src/data/site.ts) rather than being repeated here — NAME UPDATE
+ * 2026-08-16 removed the literal duplicate that used to be passed to
+ * <BaseLayout> below, so the name has exactly one source of truth.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
@@ -42,12 +44,7 @@ import { hero } from '../data/hero';
 const jsonLd = buildHomepageSchema(Astro.site, ogPortrait.src);
 ---
 
-<BaseLayout
-  jsonLd={jsonLd}
-  ogImage={ogPortrait.src}
-  title="Simone Tavolaro | Fonoaudióloga em Alphaville, Barueri"
-  description="Atendimento fonoaudiológico particular e on-line em Alphaville, Barueri, para crianças, adolescentes e adultos: linguagem, fala, fluência e oratória."
->
+<BaseLayout jsonLd={jsonLd} ogImage={ogPortrait.src}>
   <Hero />
   <SocialProof />
   <PracticeAreas />

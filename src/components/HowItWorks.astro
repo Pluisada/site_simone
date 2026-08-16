@@ -1,26 +1,29 @@
 ---
 /**
- * Como Funciona — connected numbered timeline.
+ * Como Funciona — two editorial items (no numbering, no timeline).
  * design-system.md §22, content-positioning-brief.md §8.
  *
+ * RESTRUCTURED 2026-08-16 (client-requested, client-approved). Previously a
+ * four-step numbered horizontal/vertical timeline. Simone asked for the
+ * numbered-timeline presentation to be removed entirely: no 01–04 markers,
+ * no circles, no connectors. The two items below replace it — same
+ * validated content, regrouped and reordered visually only, never reworded.
+ *
  * HARD RULES:
- *  - Timeline, NOT cards. Four steps are never independent boxes
- *    (a card grid here would be the page's fourth card pattern).
- *  - Horizontal on desktop, vertical below 1024px. Never a carousel and
- *    never horizontally scrollable.
- *  - Online mechanics attach to step 02 only — no second parallel timeline.
+ *  - Exactly two items. No numbering, no timeline connector, no cards.
+ *  - Online mechanics stay attached to the second item only.
  *  - No CTA here. The approved strategy has exactly three CTA placements
  *    (hero, after Áreas de Atuação, footer) — adding a fourth would break
  *    design-system.md §15/§35.
  *
- * ACCESSIBILITY: the steps are an <ol>, so order is conveyed structurally
- * rather than by the visual markers. The marker digits are therefore
- * aria-hidden — they duplicate the list semantics for sighted users only.
- * The sequence stays understandable with CSS or colour unavailable.
+ * ACCESSIBILITY: rendered as a <ul> of two <li> — "list, 2 items" is
+ * announced by screen readers, satisfying "the reader must perceive two
+ * main items" without any extra ARIA. The bullet mark before each title is
+ * decorative (CSS ::before), not part of the accessible name.
  */
 import { Image } from 'astro:assets';
 import Container from './Container.astro';
-import { processSteps, onlineNote, processSection } from '../data/process';
+import { processItems, processSection } from '../data/process';
 import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
 ---
 
@@ -47,28 +50,33 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
       </figure>
     </div>
 
-    <ol class="timeline">
+    <ul class="how-items">
       {
-        processSteps.map((step) => (
-          <li class="step" id={`passo-${step.id}`}>
-            <span class="step__marker tabular" aria-hidden="true">
-              {step.number}
-            </span>
-            <div class="step__body">
-              <h3 class="step__title">{step.title}</h3>
-              <p class="step__description">{step.description}</p>
+        processItems.map((item, index) => (
+          <li
+            class:list={['how-item', index > 0 && 'how-item--divided']}
+            id={`como-funciona-${item.id}`}
+          >
+            <h3 class="how-item__title">{item.title}</h3>
 
-              {step.id === 'consulta-inicial' && (
-                <p class="step__note">
-                  <span class="step__note-label">{onlineNote.label}:</span>{' '}
-                  {onlineNote.text}
-                </p>
-              )}
-            </div>
+            {item.content.map((block) => {
+              if (block.type === 'quote') {
+                return <p class="how-item__quote">{block.text}</p>;
+              }
+              if (block.type === 'note') {
+                return (
+                  <p class="how-item__note">
+                    <span class="how-item__note-label">{block.label}:</span>{' '}
+                    {block.text}
+                  </p>
+                );
+              }
+              return <p class="how-item__paragraph">{block.text}</p>;
+            })}
           </li>
         ))
       }
-    </ol>
+    </ul>
   </Container>
 </section>
 
@@ -107,71 +115,74 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
     border-radius: var(--radius-lg);
   }
 
-  /* ---- Timeline ---- */
-  .timeline {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-lg);
+  /* ---- Items — editorial list, not a timeline ----
+   * Same stacked-block language already used for Áreas de Atuação's two
+   * groups (design-system.md §20): full-width blocks, hairline divider,
+   * no cards, no forced equal height. */
+  .how-items {
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .step {
-    position: relative;
-    display: grid;
-    grid-template-columns: 30px 1fr;
-    column-gap: var(--space-md);
-    align-items: start;
+  .how-item {
+    padding-block: var(--space-lg);
+    border-block-end: 1px solid var(--color-border);
   }
 
-  /* Vertical connector (mobile/tablet): runs from below one marker down to
-   * the next. Sits behind the markers, which have a solid fill. */
-  .step:not(:last-child)::before {
-    content: '';
-    position: absolute;
-    inset-block: 30px calc(var(--space-lg) * -1);
-    inset-inline-start: 15px; /* marker centre */
-    inline-size: 1px;
-    background-color: var(--color-border);
+  .how-item:last-child {
+    border-block-end: 0;
+    padding-block-end: 0;
   }
 
-  .step__marker {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    inline-size: 30px;
-    block-size: 30px;
-    border-radius: 50%;
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
-    font-family: var(--font-body);
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: var(--tracking-small);
+  .how-item--divided {
+    /* Slightly more generous than the hairline above alone, so the second
+     * (much longer) item still reads as its own block. */
+    margin-block-start: var(--space-xs);
   }
 
-  .step__title {
+  .how-item__title {
     margin: 0;
-    /* One notch below the area names so this section never out-shouts
-     * Áreas de Atuação or the Hero. */
-    font-size: var(--font-size-body);
-    line-height: var(--leading-snug);
-    font-weight: var(--font-weight-semibold);
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    font-size: var(--font-size-h3);
+    line-height: var(--leading-h3);
+    letter-spacing: var(--tracking-h3);
   }
 
-  .step__description {
-    margin-block-start: var(--space-3xs);
-    color: var(--color-text);
+  /* Decorative bullet mark — replaces the removed numbered circle. Ignored
+   * by screen readers (generated content, not real text). */
+  .how-item__title::before {
+    content: '';
+    flex: none;
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: 50%;
+    background-color: var(--color-terracotta);
+  }
+
+  .how-item__quote {
+    margin-block-start: var(--space-sm);
+    font-style: italic;
+    color: var(--color-text-muted);
     max-inline-size: 46ch;
   }
 
-  /* Online mechanics — a quiet annotation on step 02, marked by a hairline
-   * rule rather than a box, so it never reads as a separate track. */
-  .step__note {
+  .how-item__paragraph {
     margin-block-start: var(--space-sm);
+    color: var(--color-text);
+    max-inline-size: 62ch;
+  }
+
+  .how-item__paragraph + .how-item__paragraph {
+    margin-block-start: var(--space-md);
+  }
+
+  /* Online mechanics — a quiet annotation, marked by a hairline rule rather
+   * than a box, so it never reads as a separate track. */
+  .how-item__note {
+    margin-block-start: var(--space-md);
     padding-inline-start: var(--space-sm);
     border-inline-start: 2px solid var(--color-terracotta);
     font-size: var(--font-size-small);
@@ -180,12 +191,12 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
     max-inline-size: 46ch;
   }
 
-  .step__note-label {
+  .how-item__note-label {
     font-weight: var(--font-weight-semibold);
     color: var(--color-text);
   }
 
-  /* ---- Desktop: horizontal timeline ---- */
+  /* ---- Desktop: header keeps its asymmetric text/photo split ---- */
   @media (min-width: 1024px) {
     .how__header {
       display: grid;
@@ -203,53 +214,19 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
       max-inline-size: 100%;
     }
 
-    .timeline {
-      position: relative;
-      flex-direction: row;
-      gap: var(--space-lg);
-    }
-
-    /* Horizontal connector spans marker centre to marker centre. */
-    .timeline::before {
-      content: '';
-      position: absolute;
-      inset-block-start: 15px;
-      inset-inline: 15px;
-      block-size: 1px;
-      background-color: var(--color-border);
-    }
-
-    .step {
-      flex: 1;
-      grid-template-columns: 1fr;
-      grid-template-rows: 30px auto;
-      row-gap: var(--space-sm);
-      /* Flex stretches every step to the tallest one. Without this, the auto
-       * rows absorb that extra height unevenly (each step has a different
-       * text length), so the titles drift out of alignment. Pinning the
-       * marker row and starting the content keeps all four titles on one line. */
-      align-content: start;
-    }
-
-    /* The per-step vertical connector is a mobile-only device. */
-    .step:not(:last-child)::before {
-      content: none;
-    }
-
-    .step__body {
-      /* Room for the note under step 02 without stretching its siblings. */
-      align-self: start;
+    .how-item {
+      padding-block: var(--space-xl);
     }
   }
 
   /* ---- Motion: same restrained reveal used elsewhere (design-system.md §31) ---- */
   @media (prefers-reduced-motion: no-preference) {
-    .step {
-      animation: step-enter var(--duration-slow) var(--easing-standard) both;
+    .how-item {
+      animation: how-item-enter var(--duration-slow) var(--easing-standard) both;
     }
   }
 
-  @keyframes step-enter {
+  @keyframes how-item-enter {
     from {
       opacity: 0;
       transform: translateY(var(--distance-reveal));

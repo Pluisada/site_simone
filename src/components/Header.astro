@@ -30,6 +30,7 @@ function isCurrent(href: string): boolean {
     <a class="header__brand" href="/">
       <span class="header__name">{site.name}</span>
       <span class="header__role">{site.role}</span>
+      <span class="header__crfa">CRFa. {site.crfa}</span>
     </a>
 
     {/* Desktop navigation */}
@@ -147,6 +148,18 @@ function isCurrent(href: string): boolean {
     letter-spacing: var(--tracking-eyebrow);
     text-transform: uppercase;
     color: var(--color-text-muted);
+  }
+
+  /* CRFa registration — same brand block, one notch quieter than the role
+   * line (regular weight, not uppercase, tabular digits). Reuses the role
+   * line's font-size so the extra line adds minimal header height. */
+  .header__crfa {
+    font-family: var(--font-body);
+    font-size: var(--font-size-eyebrow);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--tracking-small);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
   }
 
   /* Desktop nav + header CTA hidden below 1024px (§18). */
