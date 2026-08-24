@@ -103,7 +103,12 @@ import roomPhoto from '../assets/images/sala-infantil-4x3.jpg';
     display: flex;
     flex-direction: column;
     gap: var(--space-xl);
-    margin-block-end: var(--space-2xl);
+    /* Space before the first list item only — deliberately tighter than
+     * the space-2xl used elsewhere for section-level gaps (client-requested
+     * 2026-08-24: the gap before "Primeiro contato" read as disconnected
+     * from the intro). Item-to-item spacing (.how-item padding-block,
+     * .how-item--divided) is untouched. */
+    margin-block-end: var(--space-sm);
   }
 
   .how__title {
