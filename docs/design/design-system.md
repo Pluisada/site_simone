@@ -403,19 +403,32 @@ No third button style exists. There is no outline/bordered button variant unless
 > were reviewed and intentionally not used — full reasoning logged in
 > `src/data/assets.ts`.
 >
-> **Approved curated set:**
+> **AMENDED 2026-08-24 (photo-insertion audit — corrects the entry directly
+> above).** The "Como Funciona — two rooms" pairing was placement-checked by
+> browser screenshot at multiple viewports the same day. Direct comparison of
+> the two source files established `img-5154_orig.jpeg` and
+> `sala-infantil-4x3.jpg` are **the same physical room** (same wall charts,
+> desk, window, chairs) — the first is simply a wider frame that also catches
+> the ring light and kids' table. Stacking them read as duplicated content,
+> not the two distinct spaces the pairing was meant to show. **Corrected to a
+> single image**: `sala-infantil-4x3.jpg` only (the calmer, tighter of the two
+> crops). `img-5154_orig.jpeg` is no longer used anywhere — see
+> `src/data/assets.ts` for its updated status.
+>
+> **Approved curated set (current):**
 > | Role | Source | Status |
 > |---|---|---|
 > | Hero — primary portrait | `photo-2025-08-20-09-41-26_orig.jpg` (734×800) → 640×800 4:5 crop | approved, in use |
 > | Quem é Simone — contextual portrait | `photo-2025-08-20-10-23-55_orig.jpg` (1280×720) → 576×720 4:5 crop | approved, in use |
-> | Como Funciona — therapy room (1st image) | `img-5154_orig.jpeg` (1067×800) | approved, in use |
-> | Como Funciona — children's room (2nd image, stacked below the 1st) | client phone photo (1280×1211) → 960×720 4:3 crop | approved 2026-08-24, in use |
+> | Como Funciona — sole supporting image | client phone photo (1280×1211) → 960×720 4:3 crop (`sala-infantil-4x3.jpg`) | approved 2026-08-24, in use |
 > | Contato — reception, above the contact details | client phone photo (1162×1280), native ratio | approved 2026-08-24, in use |
 >
 > **Rule that follows from this:** the Hero and Quem é Simone must use
-> *different* photographs. Repeating one image across both is a regression.
-> Como Funciona's two images are likewise two *different* rooms (general
-> consultation room, then the children's room) — never the same shot twice.
+> *different* photographs. Repeating one image across both is a regression —
+> and, per the correction above, so is repeating one *room* across two
+> images in the same section, even at different crops. Every image slot on
+> the page must be verified to show a genuinely distinct subject before
+> pairing it with another.
 >
 > **Contato scope change:** Contact.astro was previously documented as a
 > concise, image-free block. The reception photo above breaks that — it is a
@@ -425,8 +438,10 @@ No third button style exists. There is no outline/bordered button variant unless
 >
 > **Rejected on audit:** the WhatsApp screenshot; the building exterior (its
 > signage matches the validated address, but the filename shows it came from a
-> third-party real-estate listing, so ownership cannot be established); and the
-> current logo JPEG as a design asset.
+> third-party real-estate listing, so ownership cannot be established); the
+> current logo JPEG as a design asset; and (2026-08-24) `img-5154_orig.jpeg`
+> as a *second* Como Funciona image, for duplicating `sala-infantil-4x3.jpg`'s
+> room — see amendment above.
 
 - **Primary crop:** ≈4:5, portrait orientation — hero, credentials block, Sobre page
 - **Secondary crop:** 1:1 — reserved for space-constrained future placements; not currently used anywhere in this spec

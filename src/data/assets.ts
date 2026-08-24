@@ -58,10 +58,10 @@ export const photoAssets: PhotoAsset[] = [
     file: 'sources/consultorio-sala-1067x800.jpg',
     sourceFile: 'img-5154_orig.jpeg (1067×800)',
     dimensions: '1067×800',
-    role: 'Como Funciona — therapy room (supporting editorial image)',
-    status: 'approved',
+    role: 'No longer used — removed from Como Funciona',
+    status: 'rejected',
     notes:
-      'Real consultation room, placed in Como Funciona at its native 4:3 ratio, uncropped. Taken from Simone\'s own uploads folder; it was never displayed on the current site (it only leaked via og:image). CLIENT-AUTHORIZED 2026-08-16: the client explicitly confirmed use of the current website\'s consultório photographs on the new site, covering this image — supersedes the earlier PRE-LAUNCH CHECK note (client-validation I2 no longer needs to be stretched to imply it).',
+      'Real consultation room. Placed in Como Funciona 2026-08-16 through 2026-08-24. REMOVED 2026-08-24 (photo-insertion audit): direct file comparison established this is the SAME physical room as sala-infantil-4x3.jpg (same wall charts, desk, window, chairs — just a wider frame that also includes the ring light and yellow kids\' table). Stacking both in Como Funciona read as duplicated content, not two distinct spaces. sala-infantil-4x3.jpg — a calmer, tighter crop of this same room — was kept as the section\'s single image; this asset is not currently used anywhere. Not deleted from disk (still a legitimate, client-authorized photo) in case a genuinely different second space is sourced later.',
   },
   {
     file: 'sources/consultorio-recepcao-1067x800.jpg',
@@ -85,10 +85,10 @@ export const photoAssets: PhotoAsset[] = [
     file: 'sala-infantil-4x3.jpg',
     sourceFile: 'PHOTO-2026-08-18-09-35-54 2.jpg (1280×1211, phone original), cropped',
     dimensions: '960×720 (cropped 4:3 from the 1280×1211 original; see sources/consultorio-sala-infantil-1280x1211.jpg for the uncropped source)',
-    role: 'Como Funciona — second supporting editorial image, stacked under the existing room photo',
+    role: 'Como Funciona — sole supporting editorial image',
     status: 'approved',
     notes:
-      'CLIENT-PROVIDED 2026-08-24, photographed by Simone. Pediatric therapy room: alphabet/number/phoneme ("Boquinhas — Fonemas") wall charts — strong authenticity signal for the parent-of-a-child journey (the largest stated audience, client-validation A2). Centered 4:3 crop removes the closet door (left) and the mismatched kid furniture (right) that made the as-shot frame read as cluttered against design-system.md §27\'s standard, while keeping the chart wall, the two chairs, the desk and the window in view. PLACEMENT APPROVED 2026-08-24 (design-system.md §27 amendment) — stacked below consultorio-sala-1067x800.jpg in HowItWorks.astro.',
+      'CLIENT-PROVIDED 2026-08-24, photographed by Simone. Pediatric therapy room: alphabet/number/phoneme ("Boquinhas — Fonemas") wall charts — strong authenticity signal for the parent-of-a-child journey (the largest stated audience, client-validation A2). Centered 4:3 crop removes the closet door (left) and the mismatched kid furniture (right) that made the as-shot frame read as cluttered against design-system.md §27\'s standard, while keeping the chart wall, the two chairs, the desk and the window in view. PLACEMENT APPROVED 2026-08-24, initially stacked below consultorio-sala-1067x800.jpg. CORRECTED same day (photo-insertion audit): that pairing turned out to be the same room shown twice (see consultorio-sala-1067x800.jpg\'s entry above) — this is now Como Funciona\'s only image, chosen over the other as the calmer, tighter of the two crops.',
   },
   {
     file: '—',

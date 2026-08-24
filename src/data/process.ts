@@ -88,9 +88,11 @@ export const processSection = {
   heading: 'Do primeiro contato ao acompanhamento',
   /** Purely structural framing — states the sequence exists, claims nothing. */
   lead: 'O caminho é o mesmo para o atendimento presencial e para o on-line.',
+  /**
+   * UPDATED 2026-08-24 (photo-insertion audit): now describes
+   * sala-infantil-4x3.jpg specifically — see HowItWorks.astro's header
+   * comment for why the second, redundant image (same room) was removed.
+   */
   imageAlt:
-    'Sala de atendimento do consultório, com mesa, cadeiras e materiais de apoio',
-  /** Second supporting image — added 2026-08-24 (design-system.md §27 amendment). */
-  imageAltChildren:
-    'Sala de atendimento infantil do consultório, com cartazes de alfabeto, números e fonemas na parede',
+    'Sala de atendimento do consultório, com cartazes de alfabeto, números e fonemas na parede',
 } as const;
