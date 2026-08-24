@@ -391,6 +391,45 @@ Linting enforces the token rule automatically: any literal color outside
 `src/styles/tokens.css` fails `lint:css`. Cosmetic/formatting rules are
 deliberately disabled — see the comments in `stylelint.config.js`.
 
+Local development environment
+
+This project's working copy lives inside iCloud Drive (`~/Library/Mobile
+Documents/com~apple~CloudDocs/...`). iCloud actively syncs whatever sits in
+`node_modules` (hundreds of packages, thousands of small files), and that
+sync competing with Node/Vite/Astro reading the same files causes `npm run
+dev`, `npm run check` and `npm run build` to hang indefinitely — confirmed
+with `sample` on the stuck process: the main thread sits in a blocking
+`read()` syscall that never returns, waiting on a file iCloud hasn't
+finished materializing locally. `iCloud sync being "caught up"` per `brctl
+status` does NOT guarantee this won't happen — individual files can still
+stall on first read.
+
+**Fix (already applied on this machine, 2026-08-24):** `node_modules`,
+`.astro` and `dist` are symlinks to `~/.node-modules-local/landpage-simone/`
+— a local, non-iCloud path — instead of real directories inside the
+project folder. All three are already gitignored, so this changes nothing
+that's tracked.
+
+**Known gotcha:** running `npm install` again (e.g. after adding a
+dependency) makes npm delete the `node_modules` symlink and recreate a real
+directory in its place inside iCloud — npm does not preserve a symlinked
+`node_modules` root through `reify`. When that happens, redo the move:
+
+```bash
+STORE="$HOME/.node-modules-local/landpage-simone"
+rm -rf "$STORE/node_modules"
+mv node_modules "$STORE/node_modules"
+ln -s "$STORE/node_modules" node_modules
+```
+
+(`.astro` and `.dist` are written by Astro/Vite directly, not npm, so their
+symlinks survive normal `dev`/`build`/`check` runs without this.)
+
+Also: `astro check`/`astro dev` prompt interactively for telemetry consent
+on first run in a given environment, which hangs forever with no TTY
+attached (e.g. a non-interactive shell). Run `npx astro telemetry disable`
+once per machine to avoid this.
+
 Project structure
 
 ```

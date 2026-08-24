@@ -1,9 +1,12 @@
 # build output
-dist/
-.astro/
+# No trailing slash: on this machine these are symlinks to a local,
+# non-iCloud-synced store (see CLAUDE.md "Local development environment"),
+# and a trailing-slash pattern only matches real directories, not symlinks.
+dist
+.astro
 
 # dependencies
-node_modules/
+node_modules
 
 # logs
 npm-debug.log*
