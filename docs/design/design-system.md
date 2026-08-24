@@ -449,6 +449,15 @@ No third button style exists. There is no outline/bordered button variant unless
 > width, arranged as 4 columns at ≥1024px. See Contact.astro's header
 > comment for the full history.
 >
+> **Second refinement (2026-08-24, same day):** Layer 1's `align-items:
+> center` split the photo/text height mismatch (~255px) roughly in half,
+> leaving ~128px of empty space below the CTA before Layer 2's own 64px
+> margin even started — a ~192px total gap the CTA visibly sat above.
+> Changed to `align-items: end`: the slack moves above the eyebrow (ordinary
+> section-entry breathing room) instead of below the CTA, so the CTA's
+> bottom now lands at the photo's bottom and Layer 2 starts right after, at
+> roughly its own margin alone.
+>
 > **Rejected on audit:** the WhatsApp screenshot; the building exterior (its
 > signage matches the validated address, but the filename shows it came from a
 > third-party real-estate listing, so ownership cannot be established); the

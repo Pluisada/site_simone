@@ -225,13 +225,22 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
   @media (min-width: 1024px) {
     /* Layer 1: text+CTA beside the photo, sized by ITS OWN (much closer)
      * content heights — the photo no longer shares a row with the details
-     * list, so this row's height mismatch is modest, not ~800px. */
+     * list, so this row's height mismatch is modest, not ~800px.
+     *
+     * SECOND REFINEMENT 2026-08-24: align-items was `center`, which splits
+     * the ~255px height difference (photo 478px vs text 223px) roughly in
+     * half — ~128px of empty space sat below the CTA *before* Layer 2's
+     * own margin even started, so the real gap the CTA sees was ~192px,
+     * not the 64px margin alone. `end` puts that slack above the eyebrow
+     * instead (ordinary top breathing room for the section) and lets the
+     * CTA's bottom land at the photo's bottom — Layer 2 then starts right
+     * after, at roughly just its own margin-block-start. */
     .contact__intro-row {
       display: grid;
       /* Same asymmetric proportion family used elsewhere on the page. */
       grid-template-columns: 7fr 5fr;
       gap: var(--space-3xl);
-      align-items: center;
+      align-items: end;
     }
 
     /* Layer 2: 4 columns, single row, vertical hairline dividers instead
