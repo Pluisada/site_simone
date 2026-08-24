@@ -20,11 +20,21 @@
  * announced by screen readers, satisfying "the reader must perceive two
  * main items" without any extra ARIA. The bullet mark before each title is
  * decorative (CSS ::before), not part of the accessible name.
+ *
+ * IMAGE COLUMN UPDATE 2026-08-24 (client-approved, design-system.md §27
+ * amendment): a second photo (the children's room) is now stacked below the
+ * original consultation-room photo. Still exactly two items of text content
+ * above — only the supporting image column changed.
  */
 import { Image } from 'astro:assets';
 import Container from './Container.astro';
 import { processItems, processSection } from '../data/process';
 import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
+// Second supporting image — added 2026-08-24 (design-system.md §27 amendment,
+// client-approved). Different room from roomPhoto above: the children's
+// therapy room, cropped 4:3 to remove the closet door and mismatched kid
+// furniture visible in the original phone photo (see src/data/assets.ts).
+import childrenRoomPhoto from '../assets/images/sala-infantil-4x3.jpg';
 ---
 
 <section class="how" id="como-funciona" aria-labelledby="how-title">
@@ -36,13 +46,24 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
         <p class="how__lead measure">{processSection.lead}</p>
       </div>
 
-      {/* Supporting editorial image — used at its native ratio, uncropped,
-          natural background, no overlay. Not a card: no border, no shadow. */}
+      {/* Supporting editorial images — used at native ratio, natural
+          background, no overlay. Not cards: no border, no shadow. Two
+          different rooms, stacked (design-system.md §27, 2026-08-24
+          amendment): the general consultation room, then the children's
+          room — never the same shot repeated. */}
       <figure class="how__figure">
         <Image
           src={roomPhoto}
           alt={processSection.imageAlt}
           widths={[440, 720, 1067]}
+          sizes="(min-width: 1024px) 420px, min(440px, 90vw)"
+          loading="lazy"
+          class="how__image"
+        />
+        <Image
+          src={childrenRoomPhoto}
+          alt={processSection.imageAltChildren}
+          widths={[440, 720, 960]}
           sizes="(min-width: 1024px) 420px, min(440px, 90vw)"
           loading="lazy"
           class="how__image"
@@ -107,6 +128,9 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
 
   .how__figure {
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
   }
 
   .how__image {
@@ -202,7 +226,10 @@ import roomPhoto from '../assets/images/sources/consultorio-sala-1067x800.jpg';
       display: grid;
       grid-template-columns: 7fr 5fr;
       gap: var(--space-3xl);
-      align-items: center;
+      /* Top-aligned, not centered: the image column now stacks two photos
+       * (design-system.md §27, 2026-08-24) and no longer reliably matches
+       * the text column's height. */
+      align-items: start;
     }
 
     .how__figure {

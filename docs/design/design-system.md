@@ -394,16 +394,34 @@ No third button style exists. There is no outline/bordered button variant unless
 > status) lives in `src/data/assets.ts` — the single source of truth; it is not
 > duplicated here.
 >
+> **AMENDED 2026-08-24 (client-approved).** Simone provided 5 new phone photos
+> of the consultório (higher resolution than the 800px web-scraped originals
+> above). Two were reviewed, cropped where needed, and approved for specific
+> placements — see the updated curated set below. The other 3 (a desk with
+> visible recording/router equipment, a second angle of the reception with an
+> instrument tray in view, and an uncropped wide shot of the children's room)
+> were reviewed and intentionally not used — full reasoning logged in
+> `src/data/assets.ts`.
+>
 > **Approved curated set:**
 > | Role | Source | Status |
 > |---|---|---|
 > | Hero — primary portrait | `photo-2025-08-20-09-41-26_orig.jpg` (734×800) → 640×800 4:5 crop | approved, in use |
 > | Quem é Simone — contextual portrait | `photo-2025-08-20-10-23-55_orig.jpg` (1280×720) → 576×720 4:5 crop | approved, in use |
-> | Como Funciona — therapy room | `img-5154_orig.jpeg` (1067×800) | recommended, not yet placed |
-> | Reception | `img-5152_orig.jpeg` (1067×800) | optional, placement undecided |
+> | Como Funciona — therapy room (1st image) | `img-5154_orig.jpeg` (1067×800) | approved, in use |
+> | Como Funciona — children's room (2nd image, stacked below the 1st) | client phone photo (1280×1211) → 960×720 4:3 crop | approved 2026-08-24, in use |
+> | Contato — reception, above the contact details | client phone photo (1162×1280), native ratio | approved 2026-08-24, in use |
 >
 > **Rule that follows from this:** the Hero and Quem é Simone must use
 > *different* photographs. Repeating one image across both is a regression.
+> Como Funciona's two images are likewise two *different* rooms (general
+> consultation room, then the children's room) — never the same shot twice.
+>
+> **Contato scope change:** Contact.astro was previously documented as a
+> concise, image-free block. The reception photo above breaks that — it is a
+> deliberate, approved exception for this one section, not a precedent for
+> adding imagery to Áreas de Atuação (§20) or the Footer (§25), which keep
+> their existing no-decoration rules unchanged.
 >
 > **Rejected on audit:** the WhatsApp screenshot; the building exterior (its
 > signage matches the validated address, but the filename shows it came from a

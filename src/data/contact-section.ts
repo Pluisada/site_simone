@@ -30,6 +30,9 @@ export const contactSection = {
 
   /** Accessible name for the map link (client-validation G1 destination). */
   mapLinkText: 'Ver no Google Maps',
+
+  /** Reception photo, added 2026-08-24 (design-system.md §27 amendment). */
+  photoAlt: 'Recepção do consultório',
 } as const;
 
 export const footerSection = {

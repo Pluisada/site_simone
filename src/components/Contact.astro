@@ -17,13 +17,21 @@
  * (no third-party scripts, restrictive CSP, LGPD-conscious). The link serves
  * the same navigational purpose with none of that cost. Reported as a
  * deliberate deviation.
+ *
+ * PHOTO ADDED 2026-08-24 (client-approved, design-system.md §27 amendment):
+ * a reception photo now sits above the details list. This section was
+ * previously image-free by design — the amendment documents this as a
+ * deliberate, one-section exception, not a precedent for Áreas de Atuação
+ * (§20) or the Footer (§25), which keep their no-decoration rules.
  */
+import { Image } from 'astro:assets';
 import Container from './Container.astro';
 import Button from './Button.astro';
 import { site, whatsapp, contact } from '../data/site';
 import { serviceScope } from '../data/practice-areas';
 import { contactSection } from '../data/contact-section';
 import { hero } from '../data/hero';
+import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-1162x1280.jpg';
 ---
 
 <section class="contact" id="contato" aria-labelledby="contact-title">
@@ -47,7 +55,21 @@ import { hero } from '../data/hero';
         </div>
       </div>
 
-      <dl class="details">
+      <div class="contact__details-col">
+        {/* Supporting editorial image — native ratio, no overlay, no card
+            (design-system.md §27, 2026-08-24 amendment). */}
+        <figure class="contact__figure">
+          <Image
+            src={receptionPhoto}
+            alt={contactSection.photoAlt}
+            widths={[440, 720, 1162]}
+            sizes="(min-width: 1024px) 420px, min(440px, 90vw)"
+            loading="lazy"
+            class="contact__image"
+          />
+        </figure>
+
+        <dl class="details">
         <div class="details__item">
           <dt class="details__label">{contactSection.labelWhatsapp}</dt>
           <dd class="details__value">
@@ -80,7 +102,8 @@ import { hero } from '../data/hero';
           <dt class="details__label">{contactSection.labelOnline}</dt>
           <dd class="details__value">{serviceScope.onlineEligibility}</dd>
         </div>
-      </dl>
+        </dl>
+      </div>
     </div>
   </Container>
 </section>
@@ -109,6 +132,22 @@ import { hero } from '../data/hero';
 
   .contact__cta {
     margin-block-start: var(--space-lg);
+  }
+
+  /* ---- Reception photo (design-system.md §27, 2026-08-24 amendment) ---- */
+  .contact__details-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .contact__figure {
+    margin: 0 0 var(--space-md);
+  }
+
+  .contact__image {
+    inline-size: min(440px, 90vw);
+    block-size: auto;
+    border-radius: var(--radius-lg);
   }
 
   /* ---- Details list ---- */

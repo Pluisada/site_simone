@@ -67,10 +67,28 @@ export const photoAssets: PhotoAsset[] = [
     file: 'sources/consultorio-recepcao-1067x800.jpg',
     sourceFile: 'img-5152_orig.jpeg (1067×800)',
     dimensions: '1067×800',
-    role: 'Reception — placement undecided',
-    status: 'optional',
+    role: 'Reception — superseded by consultorio-recepcao-v2 below',
+    status: 'rejected',
     notes:
-      'Reception area showing the "Fonoaudióloga Simone Tavolaro Luisada" nameplate and sala 1721, consistent with the validated address (client-validation G1). CLIENT-AUTHORIZED 2026-08-16: the client explicitly confirmed use of the current website\'s consultório photographs on the new site, covering this image — the earlier consent question is resolved. Status stays \'optional\': placement is still an open design decision, not yet made. Do not place without a placement decision.',
+      'Reception area showing the "Fonoaudióloga Simone Tavolaro Luisada" nameplate and sala 1721, consistent with the validated address (client-validation G1). Originally CLIENT-AUTHORIZED 2026-08-16. SUPERSEDED 2026-08-24: Simone provided a higher-resolution, un-watermarked original of the same room (see consultorio-recepcao-v2 below) — this capped 800px web-scraped copy should not be used now that a better source exists.',
+  },
+  {
+    file: 'sources/consultorio-recepcao-v2-1162x1280.jpg',
+    sourceFile: 'PHOTO-2026-08-18-09-35-54 5.jpg (1162×1280, phone original)',
+    dimensions: '1162×1280',
+    role: 'Contato — supporting image above the contact details list',
+    status: 'approved',
+    notes:
+      'CLIENT-PROVIDED 2026-08-24: photographed by Simone herself (not the old website scrape), replacing consultorio-recepcao-1067x800.jpg as the reception candidate — same room, cleaner framing (armchair, botanical prints, jute rug; no instrument tray in view), meaningfully higher resolution. PLACEMENT APPROVED 2026-08-24 (design-system.md §27 amendment) — used at native ratio, uncropped, in Contact.astro.',
+  },
+  {
+    file: 'sala-infantil-4x3.jpg',
+    sourceFile: 'PHOTO-2026-08-18-09-35-54 2.jpg (1280×1211, phone original), cropped',
+    dimensions: '960×720 (cropped 4:3 from the 1280×1211 original; see sources/consultorio-sala-infantil-1280x1211.jpg for the uncropped source)',
+    role: 'Como Funciona — second supporting editorial image, stacked under the existing room photo',
+    status: 'approved',
+    notes:
+      'CLIENT-PROVIDED 2026-08-24, photographed by Simone. Pediatric therapy room: alphabet/number/phoneme ("Boquinhas — Fonemas") wall charts — strong authenticity signal for the parent-of-a-child journey (the largest stated audience, client-validation A2). Centered 4:3 crop removes the closet door (left) and the mismatched kid furniture (right) that made the as-shot frame read as cluttered against design-system.md §27\'s standard, while keeping the chart wall, the two chairs, the desk and the window in view. PLACEMENT APPROVED 2026-08-24 (design-system.md §27 amendment) — stacked below consultorio-sala-1067x800.jpg in HowItWorks.astro.',
   },
   {
     file: '—',
