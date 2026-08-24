@@ -436,6 +436,19 @@ No third button style exists. There is no outline/bordered button variant unless
 > adding imagery to Áreas de Atuação (§20) or the Footer (§25), which keep
 > their existing no-decoration rules unchanged.
 >
+> **Contato desktop composition (2026-08-24, final revision).** Pairing the
+> photo with the full details list in one right-hand column against a short
+> left column (eyebrow/heading/lead/CTA) left 850px+ of empty background at
+> 1440px. A sticky-positioned left column was tried and worked technically,
+> but was rejected as the approved fix — the problem is structural
+> (mismatched row height), not a scrolling concern. **Final structure:
+> two independent layers**, not one shared grid row: Layer 1
+> (`.contact__intro-row`) pairs the intro/CTA with the photo only, sized by
+> its own much-closer content heights; Layer 2 (`.details`) is the full
+> WhatsApp/Consultório/Horários/Atendimento-on-line list, full content
+> width, arranged as 4 columns at ≥1024px. See Contact.astro's header
+> comment for the full history.
+>
 > **Rejected on audit:** the WhatsApp screenshot; the building exterior (its
 > signage matches the validated address, but the filename shows it came from a
 > third-party real-estate listing, so ownership cannot be established); the

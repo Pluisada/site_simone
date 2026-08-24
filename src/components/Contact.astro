@@ -19,10 +19,33 @@
  * deliberate deviation.
  *
  * PHOTO ADDED 2026-08-24 (client-approved, design-system.md §27 amendment):
- * a reception photo now sits above the details list. This section was
- * previously image-free by design — the amendment documents this as a
- * deliberate, one-section exception, not a precedent for Áreas de Atuação
- * (§20) or the Footer (§25), which keep their no-decoration rules.
+ * a reception photo sits beside the intro. This section was previously
+ * image-free by design — the amendment documents this as a deliberate,
+ * one-section exception, not a precedent for Áreas de Atuação (§20) or the
+ * Footer (§25), which keep their no-decoration rules.
+ *
+ * TWO-LAYER COMPOSITION 2026-08-24 (final revision, same-day follow-up).
+ * Two earlier attempts at this section's desktop layout are superseded:
+ *  1. Photo + full details list stacked in one right-hand column against a
+ *     short left column (eyebrow/heading/lead/CTA) — left ~850px of empty
+ *     background below the CTA.
+ *  2. Sticky-positioning the left column so it tracked the scroll instead
+ *     — technically worked, but rejected as the approved solution: the
+ *     visual problem is structural (a mismatched-height shared row), not a
+ *     scrolling concern, and sticky didn't change the section's own
+ *     composition.
+ *
+ * FINAL: the details list is no longer inside the intro/photo row at all.
+ * Two independent layers instead:
+ *   Layer 1 — .contact__intro-row: intro text + CTA beside the photo, a
+ *     compact row sized by its own (much closer) content heights.
+ *   Layer 2 — .details: the WhatsApp/Consultório/Horários/Atendimento
+ *     on-line list, full content width, arranged as 4 columns at ≥1024px
+ *     (vertical hairline dividers, same border/color as the mobile
+ *     horizontal dividers — just rotated to the row's axis) and stacked
+ *     on mobile exactly as before.
+ * This is why the photo no longer determines the whole section's height —
+ * it only sizes Layer 1, which is a much closer match.
  */
 import { Image } from 'astro:assets';
 import Container from './Container.astro';
@@ -36,7 +59,10 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
 
 <section class="contact" id="contato" aria-labelledby="contact-title">
   <Container>
-    <div class="contact__grid">
+    {/* Layer 1 — intro + CTA beside the photo. A compact row, not the
+        whole section: see this file's header comment for why the details
+        list below is deliberately NOT nested in here. */}
+    <div class="contact__intro-row">
       <div class="contact__intro">
         <p class="eyebrow">{contactSection.eyebrow}</p>
         <h2 class="contact__title" id="contact-title">{contactSection.heading}</h2>
@@ -55,56 +81,57 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
         </div>
       </div>
 
-      <div class="contact__details-col">
-        {/* Supporting editorial image — native ratio, no overlay, no card
-            (design-system.md §27, 2026-08-24 amendment). */}
-        <figure class="contact__figure">
-          <Image
-            src={receptionPhoto}
-            alt={contactSection.photoAlt}
-            widths={[440, 720, 1162]}
-            sizes="(min-width: 1024px) 420px, min(440px, 90vw)"
-            loading="lazy"
-            class="contact__image"
-          />
-        </figure>
-
-        <dl class="details">
-        <div class="details__item">
-          <dt class="details__label">{contactSection.labelWhatsapp}</dt>
-          <dd class="details__value">
-            <a class="details__link tabular" href={whatsapp.href} target="_blank" rel="noopener noreferrer">
-              {whatsapp.displayNumber}
-            </a>
-          </dd>
-        </div>
-
-        <div class="details__item">
-          <dt class="details__label">{contactSection.labelAddress}</dt>
-          <dd class="details__value">
-            <address class="details__address">
-              {contact.addressStreet}<br />
-              {contact.addressBuilding}<br />
-              {contact.addressDistrict}, {contact.addressLocality} — {contact.addressRegion}
-            </address>
-            <a class="details__link" href={contact.mapsUrl} target="_blank" rel="noopener noreferrer">
-              {contactSection.mapLinkText}
-            </a>
-          </dd>
-        </div>
-
-        <div class="details__item">
-          <dt class="details__label">{contactSection.labelHours}</dt>
-          <dd class="details__value">{contact.hoursHuman}</dd>
-        </div>
-
-        <div class="details__item">
-          <dt class="details__label">{contactSection.labelOnline}</dt>
-          <dd class="details__value">{serviceScope.onlineEligibility}</dd>
-        </div>
-        </dl>
-      </div>
+      {/* Supporting editorial image — native ratio, no overlay, no card
+          (design-system.md §27, 2026-08-24 amendment). */}
+      <figure class="contact__figure">
+        <Image
+          src={receptionPhoto}
+          alt={contactSection.photoAlt}
+          widths={[440, 720, 1162]}
+          sizes="(min-width: 1024px) 420px, min(440px, 90vw)"
+          loading="lazy"
+          class="contact__image"
+        />
+      </figure>
     </div>
+
+    {/* Layer 2 — contact details, full content width. 4 columns with
+        vertical dividers at ≥1024px, stacked with horizontal dividers
+        below that (same border token either way — see .details__item). */}
+    <dl class="details">
+      <div class="details__item">
+        <dt class="details__label">{contactSection.labelWhatsapp}</dt>
+        <dd class="details__value">
+          <a class="details__link tabular" href={whatsapp.href} target="_blank" rel="noopener noreferrer">
+            {whatsapp.displayNumber}
+          </a>
+        </dd>
+      </div>
+
+      <div class="details__item">
+        <dt class="details__label">{contactSection.labelAddress}</dt>
+        <dd class="details__value">
+          <address class="details__address">
+            {contact.addressStreet}<br />
+            {contact.addressBuilding}<br />
+            {contact.addressDistrict}, {contact.addressLocality} — {contact.addressRegion}
+          </address>
+          <a class="details__link" href={contact.mapsUrl} target="_blank" rel="noopener noreferrer">
+            {contactSection.mapLinkText}
+          </a>
+        </dd>
+      </div>
+
+      <div class="details__item">
+        <dt class="details__label">{contactSection.labelHours}</dt>
+        <dd class="details__value">{contact.hoursHuman}</dd>
+      </div>
+
+      <div class="details__item">
+        <dt class="details__label">{contactSection.labelOnline}</dt>
+        <dd class="details__value">{serviceScope.onlineEligibility}</dd>
+      </div>
+    </dl>
   </Container>
 </section>
 
@@ -115,7 +142,8 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
     background-color: var(--color-bg);
   }
 
-  .contact__grid {
+  /* ---- Layer 1: intro + CTA beside the photo ---- */
+  .contact__intro-row {
     display: flex;
     flex-direction: column;
     gap: var(--space-xl);
@@ -134,14 +162,9 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
     margin-block-start: var(--space-lg);
   }
 
-  /* ---- Reception photo (design-system.md §27, 2026-08-24 amendment) ---- */
-  .contact__details-col {
-    display: flex;
-    flex-direction: column;
-  }
-
+  /* Reception photo (design-system.md §27, 2026-08-24 amendment). */
   .contact__figure {
-    margin: 0 0 var(--space-md);
+    margin: 0;
   }
 
   .contact__image {
@@ -150,12 +173,15 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
     border-radius: var(--radius-lg);
   }
 
-  /* ---- Details list ---- */
+  /* ---- Layer 2: contact details, full content width ---- */
   .details {
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
-    margin: 0;
+    /* Separates this layer from Layer 1 above — see this file's header
+     * comment for why the details list no longer lives inside the
+     * intro/photo row. */
+    margin-block-start: var(--space-2xl);
   }
 
   .details__item {
@@ -197,12 +223,37 @@ import receptionPhoto from '../assets/images/sources/consultorio-recepcao-v2-116
   }
 
   @media (min-width: 1024px) {
-    .contact__grid {
+    /* Layer 1: text+CTA beside the photo, sized by ITS OWN (much closer)
+     * content heights — the photo no longer shares a row with the details
+     * list, so this row's height mismatch is modest, not ~800px. */
+    .contact__intro-row {
       display: grid;
       /* Same asymmetric proportion family used elsewhere on the page. */
       grid-template-columns: 7fr 5fr;
       gap: var(--space-3xl);
-      align-items: start;
+      align-items: center;
+    }
+
+    /* Layer 2: 4 columns, single row, vertical hairline dividers instead
+     * of the mobile stack's horizontal ones — same border token, rotated
+     * to the row's axis, not a new visual element. */
+    .details {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0 var(--space-xl);
+      margin-block-start: var(--space-2xl);
+    }
+
+    .details__item {
+      padding-block-start: 0;
+      border-block-start: none;
+      padding-inline-start: var(--space-xl);
+      border-inline-start: 1px solid var(--color-border);
+    }
+
+    .details__item:first-child {
+      padding-inline-start: 0;
+      border-inline-start: none;
     }
   }
 </style>
